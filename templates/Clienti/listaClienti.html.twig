@@ -1,0 +1,10 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    {% for cliente in dati %}
+    <div class="row">
+        <div class="col">{{ cliente.nome }}</div>
+        <div class="col">{{ cliente.cognome }}</div>
+    </div>
+    {% endfor %}
+{% endblock %}

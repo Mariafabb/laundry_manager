@@ -1,3 +1,9 @@
-{% for utente in dati %}
-    <p>{{ dati.nome }}</p>
-{% endfor %}
+{% extends "base.html.twig" %}
+
+{% block body %}
+    {% for utente in dati %}
+        <div class="row">
+            <div class="col">{{ utente.username }}</div>
+        </div>
+    {% endfor %}
+{% endblock %}

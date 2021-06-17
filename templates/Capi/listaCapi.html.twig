@@ -1,0 +1,10 @@
+{% extends "base.html.twig" %}
+
+{% block body %}
+    {% for capo in dati %}
+        <div class="row">
+            <div class="col">{{ capo.tipo }}</div>
+            <div class="col">{{ capo.prezzo }}</div>
+        </div>
+    {% endfor %}
+{% endblock %}
