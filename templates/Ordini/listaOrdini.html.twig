@@ -1,0 +1,16 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    {% for ordine in dati %}
+        <div class="row">
+            <div class="col">{{ ordine.id }}</div>
+            <div class="col">{{ ordine.clienteId.nome }}</div>
+            <div class="col">{{ ordine.clienteId.cognome }}</div>
+            <div class="col">{{ ordine.dataOrdine|date("d-m-Y") }}</div>
+            <div class="col">{{ ordine.dataConsegna|date("d-m-Y") }}</div>
+            <div class="col">{{ ordine.note }}</div>
+            <div class="col">{{ ordine.userId.username }}</div>
+            <div class="col">{{ ordine.totale }}</div>
+        </div>
+    {% endfor %}
+{% endblock %}
