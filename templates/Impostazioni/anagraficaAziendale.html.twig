@@ -1,7 +1,15 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello ImpostazioniController!{% endblock %}
-
 {% block body %}
+    <style> .sfondo{background-color: #00aa88; padding-left:50px; padding-right: 50px; padding-bottom: 20px; padding-top: 20px}
+        .margini{margin-top: 50px}
+        .testo{font-family: Century; font-size: 25px}
+        .link:hover{color: #00ccff}
+    </style>
+    <div class="margini testo" style="color: #00aa88">
     {{ form(form) }}
+    </div>
+    <div class="col-6">
+        <a class="btn sfondo testo link margini" style="color: white" href="https://127.0.0.1:8000/utenti" role="button">Utenti</a>
+    </div>
 {% endblock %}
