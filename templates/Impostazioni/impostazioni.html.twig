@@ -1,0 +1,24 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <style> .sfondo{background-color: #00aa88; padding: 20px 50px}
+        .testo{font-family: Century, serif; font-size: 25px}
+        .link:hover{color: #00ccff}
+        input,select {padding: 2px; margin-left: 50px; color: #00aa88; border-color: #00aa88}
+        form {margin-top: 150px; margin-bottom: 100px}
+        label {margin-bottom: 50px}
+    </style>
+    <div class="row d-flex justify-content-center">
+    <div class="testo box" style="color: #00aa88">
+        {{ form(form) }}
+    </div>
+    </div>
+    <div class="row d-flex justify-content-center">
+        <div class="col-4">
+        <a class="btn sfondo testo link" style="color: white" href="https://127.0.0.1:8000/utenti" role="button">Utenti</a>
+        </div>
+        <div class="col-4">
+        <a class="btn sfondo testo link" style="color: white" href="https://127.0.0.1:8000/impostazioni/anagrafica" role="button">Anagrafica</a>
+        </div>
+    </div>
+{% endblock %}

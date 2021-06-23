@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    {% for ordinerow in dati %}
+        <div class="row">
+            <div class="col">{{ ordinerow.id }}</div>
+            <div class="col">{{ ordinerow.capo.tipo }}</div>
+            <div class="col">{{ ordinerow.ordine.id }}</div>
+            <div class="col">{{ ordinerow.dataConsegna|date("d-m-Y") }}</div>
+            <div class="col">{{ ordinerow.importo }}</div>
+        </div>
+    {% endfor %}
+{% endblock %}

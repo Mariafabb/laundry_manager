@@ -3,7 +3,8 @@
 {% block body %}
     {% for utente in dati %}
         <div class="row">
-            <div class="col">{{ utente.username }}</div>
+            <div class="col">{{utente.username }}</div>
+            <div class="col">{{utente.password }}</div>
         </div>
     {% endfor %}
 {% endblock %}
