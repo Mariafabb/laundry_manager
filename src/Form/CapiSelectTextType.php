@@ -3,8 +3,8 @@
 
 namespace App\Form;
 
-use App\Form\Transformations\DescrizioneToCliente;
-use App\Repository\ClientiRepository;
+use App\Form\Transformations\DescrizioneToCapo;
+use App\Repository\CapiRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -14,18 +14,18 @@ use Symfony\Component\Form\FormView;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Routing\RouterInterface;
 
-class ClientiSelectTextType extends AbstractType
+class CapiSelectTextType extends AbstractType
 {
-    private ClientiRepository $clientiRepository;
+    private CapiRepository $capiRepository;
     private RouterInterface $router;
     private EntityManagerInterface $em;
 
     /**
-     * ClientiSelectTextType constructor.
+     * CapiSelectTextType constructor.
      */
-    public function __construct(ClientiRepository $clientiRepository, RouterInterface $router, EntityManagerInterface $em)
+    public function __construct(CapiRepository $capiRepository, RouterInterface $router, EntityManagerInterface $em)
     {
-        $this->clientiRepository = $clientiRepository;
+        $this->capiRepository = $capiRepository;
         $this->router = $router;
         $this->em = $em;
     }
@@ -33,8 +33,8 @@ class ClientiSelectTextType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->addModelTransformer(new DescrizioneToCliente(
-                $this->clientiRepository,
+            ->addModelTransformer(new DescrizioneToCapo(
+                $this->capiRepository,
                 $options['finder_callback']
             ));
     }
@@ -48,9 +48,9 @@ class ClientiSelectTextType extends AbstractType
     {
         // validazione sottoconto
         $resolver->setDefaults([
-            'invalid_message' => 'Cliente non trovato',
-            'finder_callback' => function (ClientiRepository $clientiRepository, string $cliente_id) {
-                $result = $this->clientiRepository->findOneBy(["cliente_id" => $cliente_id]);
+            'invalid_message' => 'Capo non trovato',
+            'finder_callback' => function (CapiRepository $capiRepository, string $capo_id) {
+                $result = $this->capiRepository->findOneBy(["capo_id" => $capo_id]);
                 return $result;
             }
         ]);}

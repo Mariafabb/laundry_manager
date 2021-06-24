@@ -12,7 +12,7 @@ class NuovoOrdineRowType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('capo')
+            ->add('capo', CapiSelectTextType::class)
             ->add('data_consegna')
             ->add('importo');
     }

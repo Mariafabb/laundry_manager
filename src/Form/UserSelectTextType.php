@@ -5,7 +5,7 @@ namespace App\Form;
 
 
 use App\Entity\User;
-use App\Form\Transformations\DescrizioneToutente;
+use App\Form\Transformations\DescrizioneToUtente;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Form\AbstractType;

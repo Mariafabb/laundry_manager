@@ -25,7 +25,7 @@ class DescrizioneToCliente implements DataTransformerInterface
      */
     public function __construct(ClientiRepository $clientiRepository, callable $finderCallback)
     {
-        $this->userRepository = $clientiRepository;
+        $this->clientiRepository = $clientiRepository;
         $this->finderCallback = $finderCallback;
     }
 

@@ -1,13 +1,37 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-    {% for ordinerow in dati %}
-        <div class="row">
-            <div class="col">{{ ordinerow.id }}</div>
-            <div class="col">{{ ordinerow.capo.tipo }}</div>
-            <div class="col">{{ ordinerow.ordine.id }}</div>
-            <div class="col">{{ ordinerow.dataConsegna|date("d-m-Y") }}</div>
-            <div class="col">{{ ordinerow.importo }}</div>
+<style> .sfondotitolo{background-color: darkorange; padding: 15px; margin-top: 50px; margin-left: 20px; margin-right: 20px}
+    .titolo{font-family: Century, serif; font-size: 25px; text-align: center; color:white}
+    .sfondotabella{border-style: solid; border-width: 1px;border-color: darkorange ;padding: 10px}
+    .testotabella{font-family: Century, serif; font-size: 20px; text-align: center; color: blue}
+</style>
+<div class="row">
+    <div class="col-6">
+    <div class="btn sfondotitolo titolo" style="margin-left: 100px"> Aggiungi OrdineRow</div>
+    </div>
+    <div class="col-6">
+        <div class="input-group" style="margin-top: 60px; margin-left: 300px">
+            <input type="search" class="form rounded" aria-label="Cerca" style="border-width: 5px; border-color: darkorange;margin-right: 20px; padding: 10px"/>
+            <button type="button" class="btn titolo" style="background-color: darkorange">Cerca</button>
         </div>
+    </div>
+    </div>
+</div>
+    <div class="row d-flex justify-content-center sfondotitolo">
+            <div class="col titolo">ID</div>
+            <div class="col titolo">T_Capo</div>
+            <div class="col titolo">N_Ordine</div>
+            <div class="col titolo">Data_Consegna</div>
+            <div class="col titolo">Importo</div>
+        </div>
+        {% for ordinerow in dati %}
+            <div class="row sfondotabella" style="margin-right: 20px; margin-left: 20px">
+                <div class="col testotabella">{{ ordinerow.id }}</div>
+                <div class="col testotabella">{{ ordinerow.capo.tipo }}</div>
+                <div class="col testotabella">{{ ordinerow.ordine.id }}</div>
+                <div class="col testotabella">{{ ordinerow.dataConsegna|date("d-m-Y") }}</div>
+                <div class="col testotabella">{{ ordinerow.importo }}</div>
+            </div>
     {% endfor %}
 {% endblock %}
