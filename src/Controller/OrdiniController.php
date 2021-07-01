@@ -90,8 +90,9 @@ class OrdiniController extends AbstractController
         $form = $this->createForm(NuovoOrdineType::class);
 
         $form->handleRequest($request);
-        if($form->isSubmitted() && $form->isValid()){
+        if($form->isSubmitted()){
             $ordine = $form->getData();
+            $ordiniRow = $form["ordiniRows"];
             return $this->salvaOrdine($ordine);
         }
 
@@ -167,7 +168,7 @@ class OrdiniController extends AbstractController
     }
 
         /**
-         * @Route("/ordini/{slug}", name="elimina_ordine")
+         * @Route("/ordini/elimina/{slug}", name="elimina_ordine")
          */
         public function eliminaOrdine($slug, OrdiniRepository $or){
             $ordine = $or->find($slug);
@@ -180,7 +181,7 @@ class OrdiniController extends AbstractController
         }
 
         /**
-         * @Route("/ordini/ordiniRow/{slug}", name="elimina_ordineRow")
+         * @Route("/ordini/ordiniRow/elimina/{slug}", name="elimina_ordineRow")
          */
         public function eliminaOrdineRow($slug, OrdiniRowRepository $or){
             $ordineRow = $or->find($slug);

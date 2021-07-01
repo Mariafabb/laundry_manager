@@ -3,14 +3,10 @@
 {% block body %}
 
     {{ form_start(form) }}
-
-
+{{ form_row(form.ordiniRows) }}
     {{ form_end(form) }}
 
     <button id="aggiungiCapo">Aggiungi Capo</button>
-
-    <table id="ordiniRow">
-    </table>
 {% endblock %}
 
 {% block javascripts %}

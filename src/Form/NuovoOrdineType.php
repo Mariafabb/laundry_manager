@@ -3,6 +3,7 @@
 namespace App\Form;
 
 use App\Entity\Ordini;
+use App\Entity\OrdiniRow;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ButtonType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
@@ -29,8 +30,11 @@ class NuovoOrdineType extends AbstractType
                 'mapped' => false
             ])
 
-            ->add('capi', CollectionType::class, [
-                'mapped' => false
+            ->add('ordiniRows', CollectionType::class, [
+                'mapped' => false,
+                'entry_type' => NuovoOrdineRowType::class,
+                'allow_add' => true,
+                'prototype' => false
             ])
 
             ->add('salva', SubmitType::class)
