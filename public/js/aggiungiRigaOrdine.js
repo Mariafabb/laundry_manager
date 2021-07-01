@@ -1,6 +1,12 @@
+$(document).ready(
+    function() {
+        $("#aggiungiCapo").click(function () {
+            $("#ordiniRow").append("<tr>" +
+                "<td>" + $("#nuovo_ordine_nuovo_capo").val() + "</td>" +
+                "<td onclick='eliminaRiga($(this))'>Elimina</td></tr>");
+        });
+    });
 
-    $("#nuovo_ordine_aggiungi_capo").click(function () {
-            //$("#ordiniRow").append("<tr><td>"+$('#nuovo_ordine_nuovo_capo').val+"</td></tr>");
-            alert("ciao");
-        }
-    );
+    function eliminaRiga (e) {
+        e.parent().remove();
+    }

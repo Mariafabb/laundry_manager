@@ -50,7 +50,7 @@ class CapiSelectTextType extends AbstractType
         $resolver->setDefaults([
             'invalid_message' => 'Capo non trovato',
             'finder_callback' => function (CapiRepository $capiRepository, string $capo_id) {
-                $result = $this->capiRepository->findOneBy(["capo_id" => $capo_id]);
+                $result = $this->capiRepository->findOneBy(["id" => $capo_id]);
                 return $result;
             }
         ]);}

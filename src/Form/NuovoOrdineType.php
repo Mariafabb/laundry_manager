@@ -25,14 +25,7 @@ class NuovoOrdineType extends AbstractType
             ->add('totale',NumberType::class)
             ->add('note',TextType::class)
 
-            ->add('aggiungi_capo', ButtonType::class, [
-
-            ])
-            ->add('elimina_capo', ButtonType::class, [
-
-            ])
-
-            ->add('nuovo_capo', CapiSelectTextType::class, [
+            ->add('nuovo_capo', TextType::class, [
                 'mapped' => false
             ])
 
