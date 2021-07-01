@@ -4,6 +4,7 @@ namespace App\Form;
 
 use App\Entity\OrdiniRow;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -13,8 +14,10 @@ class NuovoOrdineRowType extends AbstractType
     {
         $builder
             ->add('capo', CapiSelectTextType::class)
+            ->add('ordine', OrdiniSelectTextType::class)
             ->add('data_consegna')
-            ->add('importo');
+            ->add('importo')
+            ->add('salva', SubmitType::class);
     }
 
     public function configureOptions(OptionsResolver $resolver)

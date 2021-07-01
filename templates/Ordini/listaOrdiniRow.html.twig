@@ -1,14 +1,46 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-<style> .sfondotitolo{background-color: darkorange; padding: 15px; margin-top: 50px; margin-left: 20px; margin-right: 20px}
-    .titolo{font-family: Century, serif; font-size: 25px; text-align: center; color:white}
-    .sfondotabella{border-style: solid; border-width: 1px;border-color: darkorange ;padding: 10px}
-    .testotabella{font-family: Century, serif; font-size: 20px; text-align: center; color: blue}
-</style>
-<div class="row">
-    <div class="col-6">
-    <div class="btn sfondotitolo titolo" style="margin-left: 100px"> Aggiungi OrdineRow</div>
+    <style>
+        .sfondo{background-color: darkorange; margin-top: 5%}
+        .titolo{font-family: Century, serif; text-align: center; color:white; font-size: 25px}
+        .table {width: 100%; line-height: 50px}
+        @media screen and (min-width: 801px) {
+            table.example {
+                font-size: 20px;
+            }
+        }
+
+        @media screen and (max-width: 800px) {
+            table.example {
+                font-size: 15px;
+            }
+        }
+        @media screen and (min-width: 801px) {
+            tr.ciao {
+                font-size: 15px;
+            }
+        }
+
+        @media screen and (max-width: 800px) {
+            tr.ciao {
+                font-size: 10px;
+            }
+        }
+
+        @media screen and (min-width: 801px) {
+            a.but {
+                font-size: 25px;
+            }
+        }
+
+
+        .modifica{background-color: white; border-style: none}
+
+    </style>
+    <div class="d-grid gap-2 d-flex justify-content-end">
+        <button class="btn btn-primary me-2" type="button">Button</button>
+        <button class="btn btn-primary" type="button">Button</button>
     </div>
     <div class="col-6">
         <div class="input-group" style="margin-top: 60px; margin-left: 300px">
@@ -16,22 +48,25 @@
             <button type="button" class="btn titolo" style="background-color: darkorange">Cerca</button>
         </div>
     </div>
-    </div>
-</div>
-    <div class="row d-flex justify-content-center sfondotitolo">
-            <div class="col titolo">ID</div>
-            <div class="col titolo">T_Capo</div>
-            <div class="col titolo">N_Ordine</div>
-            <div class="col titolo">Data_Consegna</div>
-            <div class="col titolo">Importo</div>
-        </div>
+
+    <table class="table align-middle sfondo titolo example">
+        <thead>
+        <th>Id</th>
+        <th>Capo</th>
+        <th>Ordine</th>
+        <th>Data consegna</th>
+        <th>Importo</th>
+        </thead>
         {% for ordinerow in dati %}
-            <div class="row sfondotabella" style="margin-right: 20px; margin-left: 20px">
-                <div class="col testotabella">{{ ordinerow.id }}</div>
-                <div class="col testotabella">{{ ordinerow.capo.tipo }}</div>
-                <div class="col testotabella">{{ ordinerow.ordine.id }}</div>
-                <div class="col testotabella">{{ ordinerow.dataConsegna|date("d-m-Y") }}</div>
-                <div class="col testotabella">{{ ordinerow.importo }}</div>
-            </div>
-    {% endfor %}
+            <tr class="ciao" style="background-color: white;color: darkblue">
+                <td>{{ ordinerow.id }}</td>
+                <td>{{ ordinerow.capo.tipo }}</td>
+                <td>{{ ordinerow.ordine.id }}</td>
+                <td>{{ ordinerow.dataConsegna|date("d-m-Y") }}</td>
+                <td>{{ ordinerow.importo }}</td>
+                <td><a href="{{ path('modifica_ordineRow', { slug: ordinerow.id }) }}" class="modifica but"><i class="bi bi-pencil-square" style="color: darkorange"></i></a></td>
+                <td><a href="{{ path('elimina_ordineRow', { slug: ordinerow.id }) }}" class="modifica but" ><i class="bi bi-trash" style="color: darkorange"></i></a></td>
+            </tr>
+        {% endfor %}
+    </table>
 {% endblock %}

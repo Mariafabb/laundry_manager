@@ -2,6 +2,20 @@
 
 {% block body %}
 
-    {{ form(form) }}
+    {{ form_start(form) }}
 
+    <table id="ordiniRow">
+        <tr>
+            <td>{{ form_widget(form.capi) }}</td>
+        </tr>
+    </table>
+
+    {{ form_end(form) }}
+
+{% endblock %}
+
+{% block javascripts %}
+
+{{ parent() }}
+<script src="{{ asset("js/aggiungiRigaOrdine.js") }}"></script>
 {% endblock %}

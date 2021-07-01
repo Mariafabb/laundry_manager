@@ -3,6 +3,7 @@
 
 namespace App\Form;
 
+use App\Entity\Clienti;
 use App\Form\Transformations\DescrizioneToCliente;
 use App\Repository\ClientiRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -46,11 +47,10 @@ class ClientiSelectTextType extends AbstractType
 
     public function configureOptions(OptionsResolver $resolver)
     {
-        // validazione sottoconto
         $resolver->setDefaults([
             'invalid_message' => 'Cliente non trovato',
             'finder_callback' => function (ClientiRepository $clientiRepository, string $cliente_id) {
-                $result = $this->clientiRepository->findOneBy(["cliente_id" => $cliente_id]);
+                $result = $this->clientiRepository->findOneBy(["id" => $cliente_id]);
                 return $result;
             }
         ]);}
@@ -59,10 +59,9 @@ class ClientiSelectTextType extends AbstractType
     {
         $attr = $view->vars['attr'];
         $class = isset($attr['class']) ? $attr['class']. ' ' : '';
-//        $class .= 'js-autocomplete';
 
         $attr['class'] = $class;
-//        $attr['data-autocomplete-url'] = $this->router->generate('get_sottoconti_fields');
+
         $view->vars['attr'] = $attr;
     }
 }

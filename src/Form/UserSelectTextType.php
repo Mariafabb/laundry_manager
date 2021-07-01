@@ -52,7 +52,7 @@ class UserSelectTextType extends AbstractType
         $resolver->setDefaults([
             'invalid_message' => 'Cliente non trovato',
             'finder_callback' => function (UserRepository $userRepository, string $user_id) {
-                $result = $this->userRepository->findOneBy(["user_id" => $user_id]);
+                $result = $this->userRepository->findOneBy(["id" => $user_id]);
                 return $result;
             }
         ]);}

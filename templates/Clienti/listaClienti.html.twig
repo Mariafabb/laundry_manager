@@ -1,10 +1,76 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-    {% for cliente in dati %}
-    <div class="row">
-        <div class="col">{{ cliente.nome }}</div>
-        <div class="col">{{ cliente.cognome }}</div>
+    <style>
+        .sfondo{background-color: darkorange; margin-top: 5%}
+        .titolo{font-family: Century, serif; text-align: center; color:white; font-size: 25px}
+        .table {width: 100%; line-height: 50px}
+        @media screen and (min-width: 801px) {
+            table.example {
+                font-size: 20px;
+            }
+        }
+
+        @media screen and (max-width: 800px) {
+            table.example {
+                font-size: 15px;
+            }
+        }
+        @media screen and (min-width: 801px) {
+            tr.ciao {
+                font-size: 15px;
+            }
+        }
+
+        @media screen and (max-width: 800px) {
+            tr.ciao {
+                font-size: 10px;
+            }
+        }
+
+        @media screen and (min-width: 801px) {
+            a.but {
+                font-size: 25px;
+            }
+        }
+
+
+        .modifica{background-color: white; border-style: none}
+
+    </style>
+    <div class="d-grid gap-2 d-flex justify-content-end">
+        <button class="btn btn-primary me-2" type="button">Button</button>
+        <button class="btn btn-primary" type="button">Button</button>
     </div>
-    {% endfor %}
+        <div class="col-6">
+            <div class="input-group" style="margin-top: 60px; margin-left: 300px">
+                <input type="search" class="form rounded" aria-label="Cerca" style="border-width: 5px; border-color: darkorange;margin-right: 20px; padding: 10px"/>
+                <button type="button" class="btn titolo" style="background-color: darkorange">Cerca</button>
+            </div>
+        </div>
+
+    <table class="table align-middle sfondo titolo example">
+        <thead>
+            <th>Nome</th>
+            <th>Cognome</th>
+            <th>Indirizzo</th>
+            <th>Provincia</th>
+            <th>Telefono</th>
+            <th>Cellulare</th>
+            <th>E-mail</th>
+        </thead>
+        {% for cliente in dati %}
+        <tr class="ciao" style="background-color: white;color: darkblue">
+            <td>{{ cliente.nome }}</td>
+            <td>{{ cliente.cognome }}</td>
+            <td>{{ cliente.indirizzo }}</td>
+            <td>{{ cliente.provincia }}</td>
+            <td>{{ cliente.telefono }}</td>
+            <td>{{ cliente.cellulare }}</td>
+            <td>{{ cliente.email }}</td>
+            <td><a href="{{ path('modifica_cliente', { slug: cliente.id }) }}" class="modifica but"><i class="bi bi-pencil-square" style="color: darkorange"></i></a></td>
+            <td><a href="{{ path('elimina_cliente', { slug: cliente.id }) }}" class="modifica but" ><i class="bi bi-trash" style="color: darkorange"></i></a></td>
+        </tr>
+        {% endfor %}
+    </table>
 {% endblock %}
