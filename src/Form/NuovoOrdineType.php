@@ -8,6 +8,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ButtonType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
+use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -29,12 +30,15 @@ class NuovoOrdineType extends AbstractType
             ->add('nuovo_capo', TextType::class, [
                 'mapped' => false
             ])
+            ->add('nuovo_capo_id', IntegerType::class, [
+                'mapped' => false
+            ])
 
             ->add('ordiniRows', CollectionType::class, [
                 'mapped' => false,
                 'entry_type' => NuovoOrdineRowType::class,
                 'allow_add' => true,
-                'prototype' => false
+                'prototype' => false,
             ])
 
             ->add('salva', SubmitType::class)

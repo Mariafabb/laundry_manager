@@ -2,14 +2,20 @@
 
 namespace App\Controller;
 
+use App\Entity\Capi;
 use App\Entity\Clienti;
+use App\Entity\Impostazioni;
 use App\Entity\Ordini;
 use App\Entity\OrdiniRow;
 use App\Form\NuovoOrdineType;
 use App\Form\NuovoOrdineRowType;
+use App\Repository\CapiRepository;
+use App\Repository\ImpostazioniRepository;
 use App\Repository\OrdiniRepository;
 use App\Repository\OrdiniRowRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Mike42\Escpos\PrintConnectors\FilePrintConnector;
+use Mike42\Escpos\Printer;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -20,16 +26,26 @@ class OrdiniController extends AbstractController
     private EntityManagerInterface $em;
     private OrdiniRepository $ordiniRepository;
     private OrdiniRowRepository $ordinirowRepository;
+    private CapiRepository $capiRepository;
+    private int $numeroGiorniLavorazione;
+    private ImpostazioniRepository $impostazioniRepository;
 
     /**
      * OrdiniController constructor.
      */
-    public function __construct(EntityManagerInterface $em, OrdiniRepository $ordiniRepository, OrdiniRowRepository $ordinirowRepository)
+    public function __construct(EntityManagerInterface $em, OrdiniRepository $ordiniRepository, OrdiniRowRepository $ordinirowRepository, CapiRepository $capiRepository, ImpostazioniRepository $impostazioniRepository)
     {
         $this->em = $em;
         $this->ordiniRepository = $ordiniRepository;
         $this->ordinirowRepository = $ordinirowRepository;
-    }
+        $this->capiRepository = $capiRepository;
+
+        $impostazioni = $impostazioniRepository->findOneBy(["nome" => 'metodoCalcoloGiorniLavorazione']);
+        switch ($impostazioni->getValore()){
+            case "statico": $this->numeroGiorniLavorazione = intval($impostazioniRepository->findOneBy(["nome" => 'numeroGiorniLavorazione'])->getValore()); break;
+        }
+
+    $this->impostazioniRepository = $impostazioniRepository;}
 
     /**
      * @Route("/ordini", name="lista_ordini")
@@ -62,6 +78,8 @@ class OrdiniController extends AbstractController
         $this->em->persist($ordine);
         $this->em->flush();
 
+        $this->stampaOrdine($ordine);
+
         $this->addFlash("success", "Salvataggio effettuato con successo");
 
         return $this->redirectToRoute("lista_ordini");
@@ -92,7 +110,15 @@ class OrdiniController extends AbstractController
         $form->handleRequest($request);
         if($form->isSubmitted()){
             $ordine = $form->getData();
-            $ordiniRow = $form["ordiniRows"];
+            $ordiniRow = $_POST["form_ordini_row"];
+            foreach ($ordiniRow as $capoId){
+                $capo = $this->capiRepository->findOneBy(["id" => $capoId]);
+                $ordiniRow = new OrdiniRow();
+                $ordiniRow->setCapo($capo)
+                    ->setimporto($capo->getPrezzo())
+                    ->setDataConsegna(new \DateTime::createFromFormat("Y-m-d", date("Y-m-d", strtotime("+$this->numeroGiorniLavorazione days"))));
+                    $ordine->addOrdiniRow($ordiniRow);
+            }
             return $this->salvaOrdine($ordine);
         }
 
@@ -191,6 +217,20 @@ class OrdiniController extends AbstractController
 
             $this->addFlash("success","cancellazione eseguita con successo!!!");
             return $this->redirectToRoute("lista_ordiniRow");
+        }
+
+        public function stampaOrdine(Ordini $ordine){
+            $connector = new FilePrintConnector("scontrini");
+            //$connector = new WindowsPrintConnector("Receipt Printer");
+
+            $printer = new Printer($connector);
+
+            $text = "";
+
+            $printer -> text($text);
+            $printer -> cut();
+            $printer -> close();
+
         }
 
 }

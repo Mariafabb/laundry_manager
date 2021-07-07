@@ -19,32 +19,16 @@ class CapiRepository extends ServiceEntityRepository
         parent::__construct($registry, Capi::class);
     }
 
-    // /**
-    //  * @return ACapi[] Returns an array of ACapi objects
-    //  */
-    /*
-    public function findByExampleField($value)
+    public function findByLikeFilter($filter)
     {
-        return $this->createQueryBuilder('a')
-            ->andWhere('a.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('a.id', 'ASC')
+        return $this->createQueryBuilder('c')
+            ->select('c.tipo', 'c.id')
+            ->andWhere('c.tipo LIKE :val')
+            ->setParameter('val', "$filter%")
+            ->orderBy('c.tipo', 'ASC')
             ->setMaxResults(10)
             ->getQuery()
             ->getResult()
-        ;
+            ;
     }
-    */
-
-    /*
-    public function findOneBySomeField($value): ?ACapi
-    {
-        return $this->createQueryBuilder('a')
-            ->andWhere('a.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
-    }
-    */
 }

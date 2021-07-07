@@ -1,9 +1,4 @@
-// const routes = require('../../public/js/fos_js_routes.json');
-// import Routing from '../../vendor/friendsofsymfony/jsrouting-bundle/Resources/public/js/router.min.js';
-//
-// Routing.setRoutingData(routes);
-// Routing.generate('rep_log_list');
-var numeroMastro;
+
 function autoCompletition (fieldInput,  fieldOutput, action, search = null) {
     fieldInput.autocomplete(
         {
@@ -31,14 +26,9 @@ function autoCompletition (fieldInput,  fieldOutput, action, search = null) {
                 fieldOutput.val(ui.item.value);
                 numeroMastro = ui.item.value;
 
-                if(action == "getFinanziamentiPratica")
-                    $("#sottoconti_descrizione").val(ui.item.descrizione);
-                else if(action == "searchUtenti" && ui.item.descrizione != "")
-                    $("#registrazioni_descrizione").val(ui.item.descrizione);
-
-                if(search != null){
-                    window.location.href = window.location.href.split('?')[0]+"?search="+ui.item.value;
-                }
+                // if(search != null){
+                //     window.location.href = window.location.href.split('?')[0]+"?search="+ui.item.value;
+                // }
                 return false;
             }
         }

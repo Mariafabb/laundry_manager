@@ -8,7 +8,7 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Entity(repositoryClass=ACapiRepository::class)
+ * @ORM\Entity(repositoryClass=CapiRepository::class)
  */
 class Capi
 {
@@ -22,7 +22,7 @@ class Capi
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $Tipo;
+    private $tipo;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
@@ -61,12 +61,12 @@ class Capi
 
     public function getTipo(): ?string
     {
-        return $this->Tipo;
+        return $this->tipo;
     }
 
-    public function setTipo(string $Tipo): self
+    public function setTipo(string $tipo): self
     {
-        $this->Tipo = $Tipo;
+        $this->tipo = $tipo;
 
         return $this;
     }

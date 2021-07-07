@@ -100,8 +100,26 @@
     "friendsofphp/proxy-manager-lts": {
         "version": "v1.0.5"
     },
+    "friendsofsymfony/jsrouting-bundle": {
+        "version": "2.3",
+        "recipe": {
+            "repo": "github.com/symfony/recipes-contrib",
+            "branch": "master",
+            "version": "2.3",
+            "ref": "a9f2e49180f75cdc71ae279a929c4b2e0638de84"
+        },
+        "files": [
+            "./config/routes/fos_js_routing.yaml"
+        ]
+    },
     "laminas/laminas-code": {
         "version": "4.3.0"
+    },
+    "mike42/escpos-php": {
+        "version": "v3.0"
+    },
+    "mike42/gfx-php": {
+        "version": "v0.6"
     },
     "nikic/php-parser": {
         "version": "v4.10.5"
@@ -303,6 +321,9 @@
     "symfony/security-http": {
         "version": "v5.3.1"
     },
+    "symfony/serializer": {
+        "version": "v5.3.2"
+    },
     "symfony/service-contracts": {
         "version": "v2.4.0"
     },
@@ -361,5 +382,8 @@
     },
     "twig/twig": {
         "version": "v3.3.2"
+    },
+    "willdurand/jsonp-callback-validator": {
+        "version": "v1.1.0"
     }
 }

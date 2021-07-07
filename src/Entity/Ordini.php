@@ -52,7 +52,7 @@ class Ordini{
     private $totale;
 
     /**
-     * @ORM\OneToMany(targetEntity=OrdiniRow::class, mappedBy="ordine")
+     * @ORM\OneToMany(targetEntity=OrdiniRow::class, mappedBy="ordine", cascade={"persist", "remove"})
      */
     private $ordiniRows;
 
