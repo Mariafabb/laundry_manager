@@ -8,6 +8,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ButtonType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
@@ -21,14 +22,25 @@ class NuovoOrdineType extends AbstractType
     {
         $builder
             ->add('cliente', ClientiSelectTextType::class)
-            ->add('user', UserSelectTextType::class)
+            ->add('cliente_id', HiddenType::class, [
+                'mapped' => false,
+            ])
+//            ->add('user', UserSelectTextType::class)
             ->add('data_ordine', DateType::class)
             ->add('data_consegna',DateType::class)
-            ->add('totale',NumberType::class)
-            ->add('note',TextType::class)
-
+            ->add('totale',NumberType::class, [
+                'attr' => [
+                    'readonly' => true,
+                    ],
+                ])
+            ->add('note',TextType::class, [
+                'required' => false,
+            ])
             ->add('nuovo_capo', TextType::class, [
                 'mapped' => false
+            ])
+            ->add('numero_capi', IntegerType::class, [
+                'mapped' =>false,
             ])
             ->add('nuovo_capo_id', IntegerType::class, [
                 'mapped' => false

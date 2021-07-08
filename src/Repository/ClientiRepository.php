@@ -19,32 +19,17 @@ class ClientiRepository extends ServiceEntityRepository
         parent::__construct($registry, Clienti::class);
     }
 
-    // /**
-    //  * @return AClienti[] Returns an array of AClienti objects
-    //  */
-    /*
-    public function findByExampleField($value)
+    public function findByLikeFilter($filter)
     {
-        return $this->createQueryBuilder('a')
-            ->andWhere('a.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('a.id', 'ASC')
+        return $this->createQueryBuilder('c')
+            ->select('CONCAT(c.nome, \' \', c.cognome) as nome_cognome', 'c.id', 'c.nome', 'c.cognome')
+            ->andWhere('c.nome LIKE :val OR c.cognome LIKE :val1')
+            ->setParameter('val', "$filter%")
+            ->setParameter('val1', "$filter%")
+            ->orderBy('c.cognome', 'ASC')
             ->setMaxResults(10)
             ->getQuery()
             ->getResult()
-        ;
+            ;
     }
-    */
-
-    /*
-    public function findOneBySomeField($value): ?AClienti
-    {
-        return $this->createQueryBuilder('a')
-            ->andWhere('a.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
-    }
-    */
 }

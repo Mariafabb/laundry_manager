@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Capi;
+use App\Entity\Clienti;
 use App\EntityInterface\Fgp\FgpDatabaseInterface;
 use App\Repository\ContiRepository;
 use App\Repository\RegistrazioniRepository;
@@ -58,6 +59,8 @@ class AuxUtilityController extends AbstractController
             case "searchCapi":
                 $this->printEntityTOJSON($filter, Capi::class, "tipo");
                 break;
+            case "searchClienti":
+                $this->printEntityTOJSON($filter, Clienti::class, "nome_cognome");
 
             default:
         }

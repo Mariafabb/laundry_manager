@@ -116,7 +116,7 @@ class OrdiniController extends AbstractController
                 $capo = $this->capiRepository->findOneBy(["id" => $capoId]);
                 $ordiniRow = new OrdiniRow();
                 $ordiniRow->setCapo($capo)
-                    ->setimporto($capo->getPrezzo())
+                    ->setimporto($capo->getPrezzo() * $capoId["numeroCapi"])
                      ->setDataConsegna($curDateTime->add(new \DateInterval(('P7D'))));
                     $ordine->addOrdiniRow($ordiniRow);
             }
