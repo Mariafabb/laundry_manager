@@ -13,15 +13,19 @@
 
 
 var i = 0;
-$(document).ready(function (){
-    fieldInput = $("#nuovo_ordine_nuovo_capo");
-    fieldOutput = $("#nuovo_ordine_nuovo_capo_id");
-    $("#nuovo_ordine_nuovo_capo").change(
-        autoCompletition(fieldInput, fieldOutput, 'searchCapi', $("#nuovo_ordine_nuovo_capo").val())
-    );
-});
 $(document).ready(
     function() {
+
+        //ricerca clienti
+
+        //ricerca capi per aggiunta a tabella
+        descrizioneCapo = $("#nuovo_ordine_nuovo_capo");
+        idCapo = $("#nuovo_ordine_nuovo_capo_id");
+        $("#nuovo_ordine_nuovo_capo").change(
+            autoCompletition(descrizioneCapo, idCapo, 'searchCapi', $("#nuovo_ordine_nuovo_capo").val())
+        );
+
+        //aggiunta capo a tabella dopo ricerca
         $("#aggiungiCapo").click(function () {
             $("#nuovo_ordine_ordiniRows").append("<div class='row'>" +
                 "<div class='col'><input value='"+ $("#nuovo_ordine_nuovo_capo").val() +"'></div>" +
@@ -30,6 +34,9 @@ $(document).ready(
                 "</div>");
             ++i;
         });
+
+
+
     });
 
 function eliminaRiga (e) {

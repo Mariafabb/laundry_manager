@@ -106,6 +106,7 @@ class OrdiniController extends AbstractController
         $ordine = new Ordini();
 
         $form = $this->createForm(NuovoOrdineType::class);
+        $curDateTime = new \DateTime();
 
         $form->handleRequest($request);
         if($form->isSubmitted()){
@@ -116,7 +117,7 @@ class OrdiniController extends AbstractController
                 $ordiniRow = new OrdiniRow();
                 $ordiniRow->setCapo($capo)
                     ->setimporto($capo->getPrezzo())
-                    ->setDataConsegna(new \DateTime::createFromFormat("Y-m-d", date("Y-m-d", strtotime("+$this->numeroGiorniLavorazione days"))));
+                     ->setDataConsegna($curDateTime->add(new \DateInterval(('P7D'))));
                     $ordine->addOrdiniRow($ordiniRow);
             }
             return $this->salvaOrdine($ordine);
@@ -224,6 +225,8 @@ class OrdiniController extends AbstractController
             //$connector = new WindowsPrintConnector("Receipt Printer");
 
             $printer = new Printer($connector);
+
+            //TODO: implementare testo e provare
 
             $text = "";
 
