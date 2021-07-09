@@ -10,6 +10,7 @@ use App\Entity\OrdiniRow;
 use App\Form\NuovoOrdineType;
 use App\Form\NuovoOrdineRowType;
 use App\Repository\CapiRepository;
+use App\Repository\ClientiRepository;
 use App\Repository\ImpostazioniRepository;
 use App\Repository\OrdiniRepository;
 use App\Repository\OrdiniRowRepository;
@@ -29,11 +30,12 @@ class OrdiniController extends AbstractController
     private CapiRepository $capiRepository;
     private int $numeroGiorniLavorazione;
     private ImpostazioniRepository $impostazioniRepository;
+    private ClientiRepository $clientiRepository;
 
     /**
      * OrdiniController constructor.
      */
-    public function __construct(EntityManagerInterface $em, OrdiniRepository $ordiniRepository, OrdiniRowRepository $ordinirowRepository, CapiRepository $capiRepository, ImpostazioniRepository $impostazioniRepository)
+    public function __construct(EntityManagerInterface $em, OrdiniRepository $ordiniRepository, OrdiniRowRepository $ordinirowRepository, CapiRepository $capiRepository, ImpostazioniRepository $impostazioniRepository, ClientiRepository $clientiRepository)
     {
         $this->em = $em;
         $this->ordiniRepository = $ordiniRepository;
@@ -45,7 +47,9 @@ class OrdiniController extends AbstractController
             case "statico": $this->numeroGiorniLavorazione = intval($impostazioniRepository->findOneBy(["nome" => 'numeroGiorniLavorazione'])->getValore()); break;
         }
 
-    $this->impostazioniRepository = $impostazioniRepository;}
+    $this->impostazioniRepository = $impostazioniRepository;
+        $this->clientiRepository = $clientiRepository;
+    }
 
     /**
      * @Route("/ordini", name="lista_ordini")
@@ -110,42 +114,29 @@ class OrdiniController extends AbstractController
 
         $form->handleRequest($request);
         if($form->isSubmitted()){
+            /** @var Ordini $ordine */
             $ordine = $form->getData();
-            $ordiniRow = $_POST["form_ordini_row"];
-            foreach ($ordiniRow as $capoId){
+
+            $ordine->setCliente($this->clientiRepository->findOneBy(["id" => $form["cliente_id"]->getData()]));
+
+            $listaCapi = $_POST["form_ordini_row"];
+            $totale = 0;
+            foreach ($listaCapi as $capoId){
                 $capo = $this->capiRepository->findOneBy(["id" => $capoId]);
                 $ordiniRow = new OrdiniRow();
+                $importoRiga = $capo->getPrezzo() * $capoId["numeroCapi"];
+                $totale += $importoRiga;
                 $ordiniRow->setCapo($capo)
-                    ->setimporto($capo->getPrezzo() * $capoId["numeroCapi"])
+                    ->setimporto($importoRiga)
                      ->setDataConsegna($curDateTime->add(new \DateInterval(('P7D'))));
                     $ordine->addOrdiniRow($ordiniRow);
             }
+            $ordine->setTotale($totale);
             return $this->salvaOrdine($ordine);
         }
 
         return $this->render("Ordini/nuovoOrdine.html.twig", [
             "ordini" => $ordine,
-            "form" => $form->createView(),
-        ]);
-    }
-
-    /**
-     * @Route("/ordini/ordinirow/nuovo", name="nuovo_ordinerow")
-     */
-    public function nuovoOrdineRow(Request $request){
-
-        $ordineRow = new OrdiniRow();
-        $form = $this->createForm(NuovoOrdineRowType::class);
-
-        $form->handleRequest($request);
-        if($form->isSubmitted() && $form->isValid()){
-            $ordineRow = $form->getData();
-
-        return $this->salvaOrdineRow($ordineRow);
-        }
-
-        return $this->render("Ordini/nuovoOrdineRow.html.twig", [
-            "ordiniRow" => $ordineRow,
             "form" => $form->createView(),
         ]);
     }
