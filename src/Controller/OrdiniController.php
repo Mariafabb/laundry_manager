@@ -31,6 +31,7 @@ class OrdiniController extends AbstractController
     private CapiRepository $capiRepository;
     private int $numeroGiorniLavorazione;
     private ImpostazioniRepository $impostazioniRepository;
+    private ClientiRepository $clientiRepository;
 
     /**
      * OrdiniController constructor.
@@ -47,7 +48,9 @@ class OrdiniController extends AbstractController
             case "statico": $this->numeroGiorniLavorazione = intval($impostazioniRepository->findOneBy(["nome" => 'numeroGiorniLavorazione'])->getValore()); break;
         }
 
-    $this->impostazioniRepository = $impostazioniRepository;}
+    $this->impostazioniRepository = $impostazioniRepository;
+        $this->clientiRepository = $clientiRepository;
+    }
 
     /**
      * @Route("/ordini", name="lista_ordini")
@@ -98,16 +101,24 @@ class OrdiniController extends AbstractController
 
         $form->handleRequest($request);
         if($form->isSubmitted()){
+            /** @var Ordini $ordine */
             $ordine = $form->getData();
-            $ordiniRow = $_POST["form_ordini_row"];
-            foreach ($ordiniRow as $capoId){
+
+            $ordine->setCliente($this->clientiRepository->findOneBy(["id" => $form["cliente_id"]->getData()]));
+
+            $listaCapi = $_POST["form_ordini_row"];
+            $totale = 0;
+            foreach ($listaCapi as $capoId){
                 $capo = $this->capiRepository->findOneBy(["id" => $capoId]);
                 $ordiniRow = new OrdiniRow();
+                $importoRiga = $capo->getPrezzo() * $capoId["numeroCapi"];
+                $totale += $importoRiga;
                 $ordiniRow->setCapo($capo)
-                    ->setimporto($capo->getPrezzo() * $capoId["numeroCapi"])
+                    ->setimporto($importoRiga)
                      ->setDataConsegna($curDateTime->add(new \DateInterval(('P7D'))));
                     $ordine->addOrdiniRow($ordiniRow);
             }
+            $ordine->setTotale($totale);
             return $this->salvaOrdine($ordine);
         }
 
