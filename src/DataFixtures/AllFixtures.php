@@ -71,6 +71,7 @@ class AllFixtures extends Fixture
                         $ordineRow->setCapo($capo);
                         $ordineRow->setOrdine($ordine);
                         $ordineRow->setimporto(100);
+                        $ordineRow->setNumeroCapi(rand(1,7));
                         $manager->persist($ordineRow);
                         }
 

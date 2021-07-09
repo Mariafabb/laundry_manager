@@ -10,11 +10,13 @@ use App\Entity\OrdiniRow;
 use App\Form\NuovoOrdineType;
 use App\Form\NuovoOrdineRowType;
 use App\Repository\CapiRepository;
+use App\Repository\ClientiRepository;
 use App\Repository\ImpostazioniRepository;
 use App\Repository\OrdiniRepository;
 use App\Repository\OrdiniRowRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Mike42\Escpos\PrintConnectors\FilePrintConnector;
+use Mike42\Escpos\PrintConnectors\WindowsPrintConnector;
 use Mike42\Escpos\Printer;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -33,7 +35,7 @@ class OrdiniController extends AbstractController
     /**
      * OrdiniController constructor.
      */
-    public function __construct(EntityManagerInterface $em, OrdiniRepository $ordiniRepository, OrdiniRowRepository $ordinirowRepository, CapiRepository $capiRepository, ImpostazioniRepository $impostazioniRepository)
+    public function __construct(EntityManagerInterface $em, OrdiniRepository $ordiniRepository, OrdiniRowRepository $ordinirowRepository, CapiRepository $capiRepository, ImpostazioniRepository $impostazioniRepository, ClientiRepository $clientiRepository)
     {
         $this->em = $em;
         $this->ordiniRepository = $ordiniRepository;
@@ -86,20 +88,6 @@ class OrdiniController extends AbstractController
     }
 
     /**
-     * @param ordini $ordinerow
-     * @return Response
-     */
-    public function salvaOrdineRow($ordineRow): Response
-    {
-        $this->em->persist($ordineRow);
-        $this->em->flush();
-
-        $this->addFlash("success", "Salvataggio effettuato con successo");
-
-        return $this->redirectToRoute("lista_ordiniRow");
-    }
-
-    /**
      * @Route("/ordini/nuovo", name="nuovo_ordine")
      */
     public function nuovoOrdine(Request $request){
@@ -130,27 +118,6 @@ class OrdiniController extends AbstractController
     }
 
     /**
-     * @Route("/ordini/ordinirow/nuovo", name="nuovo_ordinerow")
-     */
-    public function nuovoOrdineRow(Request $request){
-
-        $ordineRow = new OrdiniRow();
-        $form = $this->createForm(NuovoOrdineRowType::class);
-
-        $form->handleRequest($request);
-        if($form->isSubmitted() && $form->isValid()){
-            $ordineRow = $form->getData();
-
-        return $this->salvaOrdineRow($ordineRow);
-        }
-
-        return $this->render("Ordini/nuovoOrdineRow.html.twig", [
-            "ordiniRow" => $ordineRow,
-            "form" => $form->createView(),
-        ]);
-    }
-
-    /**
      * @Route("/ordini/modifica/{slug}", name="modifica_ordine")
      */
     public function modificaOrdine($slug, Request $request)
@@ -168,28 +135,6 @@ class OrdiniController extends AbstractController
 
         return $this->render("Ordini/nuovoOrdine.html.twig", [
             "ordini" => $ordine,
-            "form" => $form->createView()
-        ]);
-    }
-
-    /**
-     * @Route("/ordini/ordiniRow/modifica/{slug}", name="modifica_ordineRow")
-     */
-    public function modificaOrdineRow($slug, Request $request)
-    {
-
-        $ordineRow = $this->ordinirowRepository->find($slug);
-
-        $form = $this->createForm(NuovoOrdineRowType::class, $ordineRow);
-
-        $form->handleRequest($request);
-        if ($form->isSubmitted() && $form->isValid()) {
-            $ordineRow = $form->getData();
-            return $this->salvaOrdineRow($ordineRow);
-        }
-
-        return $this->render("Ordini/nuovoOrdineRow.html.twig", [
-            "ordiniRow" => $ordineRow,
             "form" => $form->createView()
         ]);
     }
@@ -221,14 +166,35 @@ class OrdiniController extends AbstractController
         }
 
         public function stampaOrdine(Ordini $ordine){
-            $connector = new FilePrintConnector("scontrini");
-            //$connector = new WindowsPrintConnector("Receipt Printer");
+            //$connector = new FilePrintConnector("scontrini");
+            $connector = new WindowsPrintConnector("scontrini");
 
             $printer = new Printer($connector);
 
             //TODO: implementare testo e provare
 
+        /**
+         * @var Impostazioni $anagraficaAzienda
+         */
+            $anagraficaAzienda = $this->impostazioniRepository->findBy(["tipo" => "anagraficaAziendale"]);
+            $cliente = $ordine->getCliente();
+
             $text = "";
+            foreach ($anagraficaAzienda as $item) {
+                $text .= $item->getValore() ."\n";
+            }
+            $text.= "\nSpettabile: " .$cliente->getCognome()."\n";
+            $text.= "Ordine numero 20" .$ordine->getId() ." del ".$ordine->getDataOrdine()->format("d-m-Y H:i")."\n";
+            $text.= "Descrizione       Q.ta    Euro\n";
+            foreach ($ordine->getOrdiniRows() as $ordineRow){
+                $text.= $ordineRow->getCapo()->getTipo() ."       ";
+                $text.= $ordineRow->getNumeroCapi() ."   ";
+                $text.= $ordineRow->getImporto();
+            }
+            $text.= "\n\n";
+            $text.= "Totale                      " .$ordine->getTotale() ."\nPAGATO\n";
+            $text.= "Riconsegna: " .$ordine->getDataConsegna()->format("d-m-Y H:i");
+            $text.="\n \n \n \n";
 
             $printer -> text($text);
             $printer -> cut();

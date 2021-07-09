@@ -39,6 +39,11 @@ class OrdiniRow
      */
     private $ordine;
 
+    /**
+     * @ORM\Column(type="integer")
+     */
+    private $numeroCapi;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -88,6 +93,18 @@ class OrdiniRow
     public function setDataConsegna(?\DateTimeInterface $dataConsegna): self
     {
         $this->dataConsegna = $dataConsegna;
+
+        return $this;
+    }
+
+    public function getNumeroCapi(): ?int
+    {
+        return $this->numeroCapi;
+    }
+
+    public function setNumeroCapi(int $numeroCapi): self
+    {
+        $this->numeroCapi = $numeroCapi;
 
         return $this;
     }
