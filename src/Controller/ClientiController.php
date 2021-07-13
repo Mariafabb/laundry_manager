@@ -31,7 +31,7 @@ class ClientiController extends AbstractController
      * @Route("/clienti", name="lista_clienti")
      */
     public function listaClienti() : Response {
-        $clienti = $this->clientiRepository->findAll();
+        $clienti = $this->clientiRepository->findAllWithLimit();
         return $this->render("Clienti/listaClienti.html.twig", [
             'dati' => $clienti
         ]);

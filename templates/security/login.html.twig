@@ -49,10 +49,10 @@
                              <div class="form-group text-center">
                                   <input type="submit" name="submit" class="btn pr-5 pl-5 p-3" style="background-color: white; font-family: Century; color: #00aa88; font-size: 20px; font-weight: bold;" value="ACCEDI">
                              </div>
-                             <div id="register-link" class="text-right">
-                                  <a href="#" style="font-family: Century,serif; color: white">Registrati Qui</a>
-                             </div>
                          <br>
+                             {% if csrf_token('authenticate') %}
+                                 <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}" />
+                             {% endif %}
                          </form>
                     </div>
             </form>

@@ -4,12 +4,8 @@ namespace App\Controller;
 
 use App\Entity\Capi;
 use App\Entity\Clienti;
-use App\EntityInterface\Fgp\FgpDatabaseInterface;
-use App\Repository\ContiRepository;
-use App\Repository\RegistrazioniRepository;
-use App\Repository\SottocontiRepository;
+use App\Entity\Ordini;
 use Doctrine\ORM\EntityManagerInterface;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
@@ -57,10 +53,16 @@ class AuxUtilityController extends AbstractController
 
         switch ($action) {
             case "searchCapi":
-                $this->printEntityTOJSON($filter, Capi::class, "tipo");
-                break;
+                $this->printEntityTOJSON($filter, Capi::class, "tipo"); break;
+            case "searchListaCapi":
+                $this->printEntityTOJSON($filter, Capi::class); break;
             case "searchClienti":
-                $this->printEntityTOJSON($filter, Clienti::class, "nome_cognome");
+                $this->printEntityTOJSON($filter, Clienti::class, "nome_cognome"); break;
+            case "searchListaClienti":
+                $this->printEntityTOJSON($filter, Clienti::class); break;
+            case "searchListaOrdini":
+                $this->printEntityTOJSON($filter, Ordini::class); break;
+
 
             default:
         }
@@ -71,7 +73,7 @@ class AuxUtilityController extends AbstractController
         ]);
     }
 
-    private function printEntityTOJSON(String $filter, String $class, String $nomeCampoDescrittivo){
+    private function printEntityTOJSON(String $filter, String $class, String $nomeCampoDescrittivo = null){
         $idField = "";
         switch ($class){
             default: $idField = "id";
@@ -79,10 +81,14 @@ class AuxUtilityController extends AbstractController
 
         $entities = $this->em->getRepository($class)->findByLikeFilter($filter);
         $response = array();
-        foreach ($entities as $temp) {
-            $descrizione = $temp[$nomeCampoDescrittivo];
-            $value = $temp[$idField];
-            $response[] = array("value"=> $value, "label"=> $descrizione);
+        if($nomeCampoDescrittivo != null) {
+            foreach ($entities as $temp) {
+                $descrizione = $temp[$nomeCampoDescrittivo];
+                $value = $temp[$idField];
+                $response[] = array("value" => $value, "label" => $descrizione);
+            }
+        } else {
+            $response = $entities;
         }
         echo json_encode($response);
     }

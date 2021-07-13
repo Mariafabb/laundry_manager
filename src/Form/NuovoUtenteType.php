@@ -17,7 +17,9 @@ class NuovoUtenteType extends AbstractType
             ->add('password')
             ->add('nome')
             ->add('cognome')
-            ->add('email')
+            ->add('email', null, [
+                'label' => "Mail",
+            ])
             ->add('salva', SubmitType::class)
         ;
     }

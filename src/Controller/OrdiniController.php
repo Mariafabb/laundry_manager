@@ -14,6 +14,7 @@ use App\Repository\ClientiRepository;
 use App\Repository\ImpostazioniRepository;
 use App\Repository\OrdiniRepository;
 use App\Repository\OrdiniRowRepository;
+use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Mike42\Escpos\PrintConnectors\FilePrintConnector;
 use Mike42\Escpos\PrintConnectors\WindowsPrintConnector;
@@ -22,6 +23,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Core\Security;
 
 class OrdiniController extends AbstractController
 {
@@ -32,11 +34,12 @@ class OrdiniController extends AbstractController
     private int $numeroGiorniLavorazione;
     private ImpostazioniRepository $impostazioniRepository;
     private ClientiRepository $clientiRepository;
+    private Security $security;
 
     /**
      * OrdiniController constructor.
      */
-    public function __construct(EntityManagerInterface $em, OrdiniRepository $ordiniRepository, OrdiniRowRepository $ordinirowRepository, CapiRepository $capiRepository, ImpostazioniRepository $impostazioniRepository, ClientiRepository $clientiRepository)
+    public function __construct(Security $security, EntityManagerInterface $em, OrdiniRepository $ordiniRepository, OrdiniRowRepository $ordinirowRepository, CapiRepository $capiRepository, ImpostazioniRepository $impostazioniRepository, ClientiRepository $clientiRepository)
     {
         $this->em = $em;
         $this->ordiniRepository = $ordiniRepository;
@@ -50,6 +53,7 @@ class OrdiniController extends AbstractController
 
     $this->impostazioniRepository = $impostazioniRepository;
         $this->clientiRepository = $clientiRepository;
+        $this->security = $security;
     }
 
     /**
@@ -57,7 +61,7 @@ class OrdiniController extends AbstractController
      */
     public function listaOrdini(): Response
     {
-        $ordini = $this->ordiniRepository->findAll();
+        $ordini = $this->ordiniRepository->findBy(['data_ordine' => new \DateTime()]);
         return $this->render("Ordini/listaOrdini.html.twig", [
             'dati' => $ordini
         ]);
@@ -93,7 +97,7 @@ class OrdiniController extends AbstractController
     /**
      * @Route("/ordini/nuovo", name="nuovo_ordine")
      */
-    public function nuovoOrdine(Request $request){
+    public function nuovoOrdine(Request $request, UserRepository $userRepository){
         $ordine = new Ordini();
 
         $form = $this->createForm(NuovoOrdineType::class);
@@ -103,14 +107,16 @@ class OrdiniController extends AbstractController
         if($form->isSubmitted()){
             /** @var Ordini $ordine */
             $ordine = $form->getData();
-
+            $ordine->setUser($this->security->getUser());
+            //$ordine->setUser($userRepository->find(1));
             $ordine->setCliente($this->clientiRepository->findOneBy(["id" => $form["cliente_id"]->getData()]));
-
+            $ordine->setDataOrdine(new \DateTime());
             $listaCapi = $_POST["form_ordini_row"];
             $totale = 0;
             foreach ($listaCapi as $capoId){
                 $capo = $this->capiRepository->findOneBy(["id" => $capoId]);
                 $ordiniRow = new OrdiniRow();
+                $ordiniRow->setNumeroCapi($capoId["numeroCapi"]);
                 $importoRiga = $capo->getPrezzo() * $capoId["numeroCapi"];
                 $totale += $importoRiga;
                 $ordiniRow->setCapo($capo)
@@ -200,7 +206,7 @@ class OrdiniController extends AbstractController
             foreach ($ordine->getOrdiniRows() as $ordineRow){
                 $text.= $ordineRow->getCapo()->getTipo() ."       ";
                 $text.= $ordineRow->getNumeroCapi() ."   ";
-                $text.= $ordineRow->getImporto();
+                $text.= $ordineRow->getImporto() ."\n";
             }
             $text.= "\n\n";
             $text.= "Totale                      " .$ordine->getTotale() ."\nPAGATO\n";

@@ -22,7 +22,7 @@ class CapiRepository extends ServiceEntityRepository
     public function findByLikeFilter($filter)
     {
         return $this->createQueryBuilder('c')
-            ->select('c.tipo', 'c.id')
+            ->select('c.id', 'c.tipo', 'c.sottotipo', 'c.descrizione', 'c.prezzo', 'c.giorni_lavorazione')
             ->andWhere('c.tipo LIKE :val')
             ->setParameter('val', "$filter%")
             ->orderBy('c.tipo', 'ASC')
@@ -30,5 +30,15 @@ class CapiRepository extends ServiceEntityRepository
             ->getQuery()
             ->getResult()
             ;
+    }
+
+    /**
+     * @return Capi[]
+     */
+    public function findAllWithLimit(){
+        return $this->createQueryBuilder('c')
+            ->setMaxResults(20)
+            ->getQuery()
+            ->getResult();
     }
 }

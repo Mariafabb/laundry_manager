@@ -4,6 +4,7 @@ namespace App\Form;
 
 use App\Entity\Ordini;
 use App\Entity\OrdiniRow;
+use phpDocumentor\Reflection\Type;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ButtonType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
@@ -26,8 +27,6 @@ class NuovoOrdineType extends AbstractType
                 'mapped' => false,
             ])
 //            ->add('user', UserSelectTextType::class)
-            ->add('data_ordine', DateType::class)
-            ->add('data_consegna',DateType::class)
             ->add('totale',NumberType::class, [
                 'attr' => [
                     'readonly' => true,
@@ -41,9 +40,10 @@ class NuovoOrdineType extends AbstractType
             ])
             ->add('numero_capi', IntegerType::class, [
                 'mapped' =>false,
+                'label' => "N. Capi",
             ])
-            ->add('nuovo_capo_id', IntegerType::class, [
-                'mapped' => false
+            ->add('nuovo_capo_id', HiddenType::class, [
+                'mapped' => false,
             ])
 
             ->add('ordiniRows', CollectionType::class, [
@@ -51,6 +51,7 @@ class NuovoOrdineType extends AbstractType
                 'entry_type' => NuovoOrdineRowType::class,
                 'allow_add' => true,
                 'prototype' => false,
+                'label' => false
             ])
 
             ->add('salva', SubmitType::class)

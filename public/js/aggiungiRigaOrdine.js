@@ -48,10 +48,10 @@ $(document).ready(
                 alert("Inserire nome capo");
             } else {
                 tabellaCapi.append("<div class='row'>" +
-                    "<div class='col'><input readonly='readonly'  id='form_ordini_row_" + i + "_idCapo' name='form_ordini_row[" + i + "][idCapo]' value='" + idCapo.val() + "'></div>" +
+                    "<div class='col'><input readonly='readonly'  id='form_ordini_row_" + i + "_idCapo' name='form_ordini_row[" + i + "][idCapo]' value='" + idCapo.val() + "' style=' background-color: #00cc00'></div>" +
                     "<div class='col'><input readonly='readonly' id='form_ordini_row_" + i + "_descrizioneCapo' name='form_ordini_row[" + i + "][descrizioneCapo]' value='" + descrizioneCapo.val() + "'></div>" +
                     "<div class='col'><input id='form_ordini_row_" + i + "_numeroCapi' name='form_ordini_row[" + i + "][numeroCapi]' value='" + numeroCapi.val() + "'></div>" +
-                    "<div class='col' onclick='eliminaRiga($(this))'>Elimina</div>" +
+                    "<button class='btn btn-primary' onclick='eliminaRiga($(this))'>Elimina</button>" +
                     "</div>");
                 ++i;
                 }

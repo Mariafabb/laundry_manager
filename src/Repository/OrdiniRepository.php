@@ -19,6 +19,30 @@ class OrdiniRepository extends ServiceEntityRepository
         parent::__construct($registry, Ordini::class);
     }
 
+    public function findByLikeFilter($filter)
+    {
+        return $this->createQueryBuilder('o')
+            ->select('o.id, c.nome, c.cognome, o.data_ordine, o.data_consegna, o.note, u.cognome, o.totale')
+            ->join('o.cliente', 'c')
+            ->join('o.user', 'u')
+            ->andWhere('c.nome LIKE :val OR c.cognome like :val1 OR o.id LIKE :val2')
+            ->setParameter('val', "$filter%")
+            ->setParameter('val1', "$filter%")
+            ->setParameter('val2', "$filter%")
+            ->orderBy('o.id', 'ASC')
+            ->setMaxResults(10)
+            ->getQuery()
+            ->getResult()
+            ;
+    }
+
+    /*
+    public function findAllWithLimit(){
+        $this->createQueryBuilder('o')
+            ->setMaxResults(30);
+    }
+*/
+
     // /**
     //  * @return Ordini[] Returns an array of Ordini objects
     //  */

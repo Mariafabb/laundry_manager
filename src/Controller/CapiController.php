@@ -29,7 +29,7 @@ class CapiController extends AbstractController
      * @Route("/capi", name="lista_capi")
      */
     public function listaCapi() :Response {
-        $capi = $this->capiRepository->findAll();
+        $capi = $this->capiRepository->findAllWithLimit();
         return $this->render("Capi/listaCapi.html.twig", [
             'dati' => $capi
         ]);

@@ -17,7 +17,9 @@ class NuovoCapoType extends AbstractType
             ->add('sottotipo')
             ->add('descrizione')
             ->add('prezzo')
-            ->add('giorni_lavorazione')
+            ->add('giorni_lavorazione', null, [
+                'label' => "G. Lavorazione",
+            ])
             ->add('salva', SubmitType::class)
         ;
     }

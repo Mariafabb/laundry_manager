@@ -1,29 +1,46 @@
 {% extends 'base.html.twig' %}
 
+{% block javascripts %}
+    {{ parent() }}
+    <script src="{{ asset("js/listaCapi.js") }}"></script>
+{% endblock %}
+
 {% block body %}
     <style>
-        .sfondo{background-color: darkorange; margin-top: 5%}
-        .titolo{font-family: Century, serif; text-align: center; color:white; font-size: 25px}
-        .table {width: 100%; line-height: 50px}
+        .sfondo{
+            background-color: darkorange; margin-top: 5%
+        }
+        .titolo{
+            font-family: Century, serif; text-align: center; color:white; font-size: 25px
+        }
+        .table {
+            width: 100%; line-height: 50px
+        }
+        .bottone {
+            font-family: Century, serif; text-align: center; font-size: 25px ;color: white; background-color: darkorange; padding: 10px 30px
+        }
+        .cerca {
+            font-family: Century, serif; font-size: 25px ; color: darkorange; border-width: 5px; border-color: darkorange; padding: 10px 30px
+        }
         @media screen and (min-width: 801px) {
-            table.example {
+            thead.response {
                 font-size: 20px;
             }
         }
 
         @media screen and (max-width: 800px) {
-            table.example {
+            thead.response {
                 font-size: 15px;
             }
         }
         @media screen and (min-width: 801px) {
-            tr.ciao {
+            tr.righe {
                 font-size: 15px;
             }
         }
 
         @media screen and (max-width: 800px) {
-            tr.ciao {
+            tr.righe {
                 font-size: 10px;
             }
         }
@@ -34,39 +51,63 @@
             }
         }
 
+        @media screen and (min-width: 801px) {
+            input.res {
+                font-size: 25px;
+            }
+        }
 
-        .modifica{background-color: white; border-style: none}
+        @media screen and (max-width: 800px) {
+            input.res {
+                font-size: 10px;
+            }
+        }
+
+        @media screen and (min-width: 801px) {
+            a.bot {
+                font-size: 25px;
+            }
+        }
+
+        @media screen and (max-width: 800px) {
+            a.bot {
+                font-size: 10px;
+            }
+        }
+
+
+        .l:hover {color: #00aa88; border-width: 7px; border-color: #00aa88; background-color: white}
+        .modifica{padding: 8px ; background-color: white; border-style: solid; border-color: darkorange}
+
 
     </style>
-    <div class="d-grid gap-2 d-flex justify-content-end">
-        <button class="btn btn-primary me-2" type="button">Button</button>
-        <button class="btn btn-primary" type="button">Button</button>
-    </div>
-    <div class="col-6">
-        <div class="input-group" style="margin-top: 60px; margin-left: 300px">
-            <input type="search" class="form rounded" aria-label="Cerca" style="border-width: 5px; border-color: darkorange;margin-right: 20px; padding: 10px"/>
-            <button type="button" class="btn titolo" style="background-color: darkorange">Cerca</button>
-        </div>
+    <div class="d-grid d-flex justify-content-center m-5" style="gap: 300px">
+        <a href="http://127.0.0.1:8000/capi/nuovo" class="btn bottone l bot" type="button">Aggiungi nuovo</a>
+        <input type="text" id="search-box" placeholder="Cerca" class="frmSearch cerca l res"/>
     </div>
 
-    <table class="table align-middle sfondo titolo example">
-        <thead>
+    <table class="table align-middle">
+        <thead class = "sfondo titolo response">
         <th>Tipo</th>
         <th>Sottotipo</th>
         <th>Descrizione</th>
         <th>Prezzo</th>
-        <th>Giorni Lavorazione</th>
+        <th>G.Lavorazione</th>
+        <th></th>
+        <th></th>
         </thead>
+        <tbody id="listaCapi">
         {% for capo in dati %}
-            <tr class="ciao" style="background-color: white;color: darkblue">
+            <tr class="righe" style="background-color: white;color: darkblue; text-align: center">
                 <td>{{ capo.tipo }}</td>
                 <td>{{ capo.sottotipo }}</td>
                 <td>{{ capo.descrizione }}</td>
                 <td>{{ capo.prezzo }}</td>
                 <td>{{ capo.giornilavorazione }}</td>
-                <td><a href="{{ path('modifica_capo', { slug: capo.id }) }}" class="modifica but"><i class="bi bi-pencil-square" style="color: darkorange"></i></a></td>
-                <td><a href="{{ path('elimina_capo', { slug: capo.id }) }}" class="modifica but" ><i class="bi bi-trash" style="color: darkorange"></i></a></td>
+                <td><a href="{{ path('modifica_capo', { slug: capo.id }) }}" class="modifica but l"><i class="bi bi-pencil-square" style="color: darkorange"></i></a></td>
+                <td><a href="{{ path('elimina_capo', { slug: capo.id }) }}" class="modifica but l" ><i class="bi bi-trash" style="color: darkorange"></i></a></td>
             </tr>
         {% endfor %}
+        </tbody>
     </table>
 {% endblock %}

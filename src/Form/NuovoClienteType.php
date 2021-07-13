@@ -23,10 +23,18 @@ class NuovoClienteType extends AbstractType
             ->add('stato')
             ->add('telefono')
             ->add('cellulare')
-            ->add('email')
-            ->add('codice_fiscale')
-            ->add('p_iva')
-            ->add('codice_univoco')
+            ->add('email', null, [
+                'label' => "Mail",
+            ])
+            ->add('codice_fiscale', null, [
+                'label' => "Cod. Fiscale",
+            ])
+            ->add('p_iva', null, [
+                'label' => "P. IVA",
+            ])
+            ->add('codice_univoco', null, [
+                'label' => "Cod. Univoco",
+            ])
             ->add('pec')
             ->add('salva', SubmitType::class);
     }
