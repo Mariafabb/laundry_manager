@@ -21,7 +21,7 @@ $(document).ready(
             "<div class=\"col\">id Capo</div>" +
             "<div class=\"col\">Descrizione</div>" +
             "<div class=\"col\">N Capi</div>" +
-            "<div class=\"col\">Elimina</div></div>"
+            "<div class=\"col\">Elimina</div>"
         );
 
         //ricerca clienti
@@ -51,7 +51,7 @@ $(document).ready(
                     "<div class='col'><input readonly='readonly'  id='form_ordini_row_" + i + "_idCapo' name='form_ordini_row[" + i + "][idCapo]' value='" + idCapo.val() + "' style=' background-color: #00cc00'></div>" +
                     "<div class='col'><input readonly='readonly' id='form_ordini_row_" + i + "_descrizioneCapo' name='form_ordini_row[" + i + "][descrizioneCapo]' value='" + descrizioneCapo.val() + "'></div>" +
                     "<div class='col'><input id='form_ordini_row_" + i + "_numeroCapi' name='form_ordini_row[" + i + "][numeroCapi]' value='" + numeroCapi.val() + "'></div>" +
-                    "<button class='btn btn-primary' onclick='eliminaRiga($(this))'>Elimina</button>" +
+                    "<button class='btn' onclick='eliminaRiga($(this))'>Elimina</button>" +
                     "</div>");
                 ++i;
                 }
