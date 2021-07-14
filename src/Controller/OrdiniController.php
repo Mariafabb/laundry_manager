@@ -219,8 +219,8 @@ class OrdiniController extends AbstractController
             $text.= "Ordine numero" .$ordine->getId() ." del ".$ordine->getDataOrdine()->format("d-m-Y H:i")."\n";
             $text.= "Descrizione       Q.ta    Euro\n";
             foreach ($ordine->getOrdiniRows() as $ordineRow){
-                $text.= $ordineRow->getCapo()->getTipo() ."                    ";
-                $text.= $ordineRow->getNumeroCapi() ."   ";
+                $text.= $ordineRow->getCapo()->getTipo() ."             ";
+                $text.= $ordineRow->getNumeroCapi() ."       ";
                 $text.= $ordineRow->getImporto() ."\n";
             }
             $text.= "\n\n";
