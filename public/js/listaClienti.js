@@ -27,7 +27,7 @@ $(document).ready(function (){
                     "<td>" + value.telefono + "</td>" +
                     "<td>" + value.cellulare + "</td>" +
                     "<td>" + value.email + "</td>" +
-                    "<td>" + value.email + "</td>" +
+                    "<td>" + value.modifica + "</td>" +
                     "<td>" + value.email + "</td>" +
                     "</tr>"
                 );

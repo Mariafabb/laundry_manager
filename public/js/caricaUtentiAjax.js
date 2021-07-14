@@ -1,3 +1,6 @@
+//variabili globali usate in aggiungicapoOrdineRow, solo per acrion = "searchCapi"
+var importoCapo = 0;
+var totaleCapi = 0;
 
 function autoCompletition (fieldInput,  fieldOutput, action, search = null) {
     fieldInput.autocomplete(
@@ -25,6 +28,10 @@ function autoCompletition (fieldInput,  fieldOutput, action, search = null) {
                 fieldInput.val(ui.item.label); // display the selected text
                 fieldOutput.val(ui.item.value);
                 numeroMastro = ui.item.value;
+
+                if(action == "searchCapi") {
+                    importoCapo = ui.item.prezzo;
+                }
 
                 // if(search != null){
                 //     window.location.href = window.location.href.split('?')[0]+"?search="+ui.item.value;

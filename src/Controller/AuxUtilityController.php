@@ -85,7 +85,12 @@ class AuxUtilityController extends AbstractController
             foreach ($entities as $temp) {
                 $descrizione = $temp[$nomeCampoDescrittivo];
                 $value = $temp[$idField];
-                $response[] = array("value" => $value, "label" => $descrizione);
+                $responseTemp = array("value" => $value, "label" => $descrizione);
+                if($nomeCampoDescrittivo == "tipo") {
+                    $responseTemp["prezzo"] = $temp["prezzo"];
+                }
+
+                $response[] = $responseTemp;
             }
         } else {
             $response = $entities;

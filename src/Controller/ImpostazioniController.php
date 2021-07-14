@@ -52,19 +52,30 @@ class ImpostazioniController extends AbstractController
      */
     public function setAnagraficaAziendale(Request $request){
 
-        $impostazioni = $this->impostazioniRepository->findBy(["tipo" => "anagrafica_aziendale"]);
+        $ragioneSociale = $this->impostazioniRepository->findOneBy(["nome" => "ragioneSociale"]);
+        $indirizzo = $this->impostazioniRepository->findOneBy(["nome" => "indirizzo"]);
 
-        $form = $this->createForm(AnagraficaAziendaleType::class, $impostazioni);
+        $form = $this->createForm(AnagraficaAziendaleType::class);
 
         $form->handleRequest($request);
         if($form->isSubmitted() && $form->isValid()){
-            $impostazioni = $form->getData();
-            $this->em->persist($impostazioni);
+
+            $ragioneSociale->setValore($form["ragione_sociale"]->getData());
+            $indirizzo->setValore($form["indirizzo"]->getData());
+
+            $this->em->persist($ragioneSociale);
+            $this->em->persist($indirizzo);
             $this->em->flush();
+        } else {
+            if(!is_null($ragioneSociale))
+                $form->get('ragione_sociale')->setData($ragioneSociale->getValore());
+            if(!is_null($indirizzo))
+                $form->get('indirizzo')->setData($indirizzo->getValore());
         }
 
         return $this->render("Impostazioni/impostazioniAnagrafica.html.twig", [
-            "dati" => $impostazioni,
+            "dati" => [
+                $ragioneSociale, $indirizzo],
             "form" => $form->createView(),
         ]);
     }
