@@ -17,13 +17,12 @@ $(document).ready(
     function() {
         var tabellaCapi = $("#nuovo_ordine_ordiniRows");
         //header tabella capi in ordine
-        tabellaCapi.append("<div class=\"row\">" +
-            "<div class=\"col\">id Capo</div>" +
-            "<div class=\"col\">Descrizione</div>" +
-            "<div class=\"col\">Importo</div>" +
-            "<div class=\"col\">N Capi</div>" +
-            "<div class=\"col\">Elimina</div>"
-        );
+    /*    tabellaCapi.append("<table class='thead'>" +
+            "<th class=\"col\">id Capo</th>" +
+            "<th class=\"col\">Descrizione</th>" +
+            "<th class=\"col\">Importo</th>" +
+            "<th class=\"col\">N Capi</th>"
+        );*/
 
         //ricerca clienti
         descrizioneCliente = $("#nuovo_ordine_cliente");
@@ -50,12 +49,26 @@ $(document).ready(
             } else if (descrizioneCapo.val() == "") {
                 alert("Inserire nome capo");
             } else {
-                tabellaCapi.append("<div class='row' numeroRiga='"+i+"'>" +
-                    "<div class='col'><input readonly='readonly'  id='form_ordini_row_" + i + "_idCapo' name='form_ordini_row[" + i + "][idCapo]' value='" + idCapo.val() + "' style=' background-color: #00cc00'></div>" +
-                    "<div class='col'><input readonly='readonly' id='form_ordini_row_" + i + "_descrizioneCapo' name='form_ordini_row[" + i + "][descrizioneCapo]' value='" + descrizioneCapo.val() + "'></div>" +
-                    "<div class='col'><input readonly='readonly' id='form_ordini_row_" + i + "_prezzoCapo' name='form_ordini_row[" + i + "][prezzoCapo]' value='" + importoCapo + "'></div>" +
-                    "<div class='col'><input id='form_ordini_row_" + i + "_numeroCapi' name='form_ordini_row[" + i + "][numeroCapi]' value='" + numeroCapi.val() + "'></div>" +
-                    "<div class='btn' onclick='eliminaRiga($(this))'>Elimina</div>" +
+                tabellaCapi.append(
+                    "<div numeroRiga='"+i+"'>" +
+
+                    "<div>" +
+                    "<input readonly='readonly'  id='form_ordini_row_" + i + "_idCapo' name='form_ordini_row[" + i + "]" +
+                    "[idCapo]' value='" + idCapo.val() + "'></div>" +
+
+                    "<div>" +
+                    "<input readonly='readonly' id='form_ordini_row_" + i + "_descrizioneCapo' name='form_ordini_row[" + i + "]" +
+                    "[descrizioneCapo]' value='" + descrizioneCapo.val() + "'></div>" +
+
+                    "<div>" +
+                    "<input readonly='readonly' id='form_ordini_row_" + i + "_prezzoCapo' name='form_ordini_row[" + i + "]" +
+                    "[prezzoCapo]' value='" + importoCapo + "'></div>" +
+
+                    "<div>" +
+                    "<input id='form_ordini_row_" + i + "_numeroCapi' name='form_ordini_row[" + i + "]" +
+                    "[numeroCapi]' value='" + numeroCapi.val() + "'></div>" +
+
+                    "<div onclick='eliminaRiga($(this))'> Elimina </div>" +
                     "</div>");
                 ++i;
                 importiCapi[i] = importoCapo;

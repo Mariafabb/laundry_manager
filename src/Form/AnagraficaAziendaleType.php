@@ -19,7 +19,7 @@ class AnagraficaAziendaleType extends AbstractType
             ->add('provincia')
             ->add('telefono')
             ->add('e_mail')
-            ->add('P_Iva')
+            ->add('p_iva')
             ->add('salva', SubmitType::class)
         ;
     }

@@ -35,6 +35,7 @@ class OrdiniController extends AbstractController
     private ImpostazioniRepository $impostazioniRepository;
     private ClientiRepository $clientiRepository;
     private Security $security;
+    private bool $lavorazioneDinamica;
 
     /**
      * OrdiniController constructor.
@@ -45,8 +46,9 @@ class OrdiniController extends AbstractController
         $this->ordiniRepository = $ordiniRepository;
         $this->ordinirowRepository = $ordinirowRepository;
         $this->capiRepository = $capiRepository;
+        $this->lavorazioneDinamica = false;
 
-        $impostazioni = $impostazioniRepository->findOneBy(["nome" => 'metodoCalcoloGiorniLavorazione']);
+        $impostazioni = $impostazioniRepository->findOneBy(["nome" => 'metodoCalcoloConsegna']);
         switch ($impostazioni->getValore()){
             case "statico": $this->numeroGiorniLavorazione = intval($impostazioniRepository->findOneBy(["nome" => 'numeroGiorniLavorazione'])->getValore()); break;
         }
@@ -102,6 +104,8 @@ class OrdiniController extends AbstractController
 
         $form = $this->createForm(NuovoOrdineType::class);
         $curDateTime = new \DateTime();
+        $dataConsegna = !$this->lavorazioneDinamica ?
+            $curDateTime->add(new \DateInterval(('P'.$this->numeroGiorniLavorazione.'D'))) : null;
 
         $form->handleRequest($request);
         if($form->isSubmitted()){
@@ -119,11 +123,21 @@ class OrdiniController extends AbstractController
                 $ordiniRow->setNumeroCapi($capoId["numeroCapi"]);
                 $importoRiga = $capo->getPrezzo() * $capoId["numeroCapi"];
                 $totale += $importoRiga;
+
+                if(is_null($this->numeroGiorniLavorazione) && $this->lavorazioneDinamica){
+                    $this->numeroGiorniLavorazione = $capo->getGiorniLavorazione();
+                    $dataConsegna = $curDateTime->add(new \DateInterval(('P'.$this->numeroGiorniLavorazione.'D')));
+                } else if($this->lavorazioneDinamica && $this->numeroGiorniLavorazione < $capo->getGiorniLavorazione()) {
+                    $this->numeroGiorniLavorazione = $capo->getGiorniLavorazione();
+                    $dataConsegna = $curDateTime->add(new \DateInterval(('P'.$this->numeroGiorniLavorazione.'D')));
+                }
+
                 $ordiniRow->setCapo($capo)
                     ->setimporto($importoRiga)
-                     ->setDataConsegna($curDateTime->add(new \DateInterval(('P7D'))));
+                     ->setDataConsegna($dataConsegna);
                     $ordine->addOrdiniRow($ordiniRow);
             }
+            $ordine->setDataConsegna($dataConsegna);
             $ordine->setTotale($totale);
             return $this->salvaOrdine($ordine);
         }
@@ -135,13 +149,13 @@ class OrdiniController extends AbstractController
     }
 
     /**
-     * @Route("/ordini/modifica/{slug}", name="modifica_ordine")
+     * @Route("/ordini/modifica/{slug}", name="modifica_ordine", options={"expose"=true})
      */
     public function modificaOrdine($slug, Request $request)
     {
 
         $ordine = $this->ordiniRepository->find($slug);
-
+        $ordiniRows = $ordine->getOrdiniRows();
         $form = $this->createForm(NuovoOrdineType::class, $ordine);
 
         $form->handleRequest($request);
@@ -151,7 +165,8 @@ class OrdiniController extends AbstractController
         }
 
         return $this->render("Ordini/nuovoOrdine.html.twig", [
-            "ordini" => $ordine,
+            "ordine" => $ordine,
+            "ordiniRows" => $ordiniRows,
             "form" => $form->createView()
         ]);
     }
@@ -201,18 +216,20 @@ class OrdiniController extends AbstractController
                 $text .= $item->getValore() ."\n";
             }
             $text.= "\nSpettabile: " .$cliente->getCognome()."\n";
-            $text.= "Ordine numero 20" .$ordine->getId() ." del ".$ordine->getDataOrdine()->format("d-m-Y H:i")."\n";
+            $text.= "Ordine numero" .$ordine->getId() ." del ".$ordine->getDataOrdine()->format("d-m-Y H:i")."\n";
             $text.= "Descrizione       Q.ta    Euro\n";
             foreach ($ordine->getOrdiniRows() as $ordineRow){
-                $text.= $ordineRow->getCapo()->getTipo() ."       ";
+                $text.= $ordineRow->getCapo()->getTipo() ."                    ";
                 $text.= $ordineRow->getNumeroCapi() ."   ";
                 $text.= $ordineRow->getImporto() ."\n";
             }
             $text.= "\n\n";
             $text.= "Totale                      " .$ordine->getTotale() ."\nPAGATO\n";
-            $text.= "Riconsegna: " .$ordine->getDataConsegna()->format("d-m-Y H:i");
+            $text.= "Riconsegna: " .$ordine->getDataConsegna()->format("d-m-Y");
             $text.="\n \n \n \n";
 
+            $printer -> text($text);
+            $printer -> cut();
             $printer -> text($text);
             $printer -> cut();
             $printer -> close();

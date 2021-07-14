@@ -22,7 +22,9 @@ class NuovoOrdineType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('cliente', ClientiSelectTextType::class)
+            ->add('cliente', ClientiSelectTextType::class,[
+            'required' => false
+            ])
             ->add('cliente_id', HiddenType::class, [
                 'mapped' => false,
             ])
@@ -36,14 +38,17 @@ class NuovoOrdineType extends AbstractType
                 'required' => false,
             ])
             ->add('nuovo_capo', TextType::class, [
-                'mapped' => false
+                'mapped' => false,
+                'required' => false,
             ])
             ->add('numero_capi', IntegerType::class, [
                 'mapped' =>false,
                 'label' => "N. Capi",
+                'required' => false,
             ])
             ->add('nuovo_capo_id', HiddenType::class, [
                 'mapped' => false,
+                'required' => false,
             ])
 
             ->add('ordiniRows', CollectionType::class, [

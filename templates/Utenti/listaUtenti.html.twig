@@ -1,6 +1,7 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
+    {{ parent() }}
     <style>
         .sfondo{background-color: darkorange; margin-top: 5%}
         .titolo{font-family: Century, serif; text-align: center; color:white; font-size: 25px}
@@ -40,7 +41,7 @@
 
     </style>
     <div class="d-grid d-flex justify-content-center m-5">
-        <a href="http://127.0.0.1:8000/utenti/nuovo" class="btn bottone l" type="button">Aggiungi nuovo</a>
+        <a href="{{ path('nuovo_utente') }}" class="btn bottone l" type="button">Aggiungi nuovo</a>
     </div>
 
     <table class="table align-middle sfondo titolo response">
@@ -56,8 +57,11 @@
                 <td>{{ utente.nome }}</td>
                 <td>{{ utente.cognome }}</td>
                 <td>{{ utente.email }}</td>>
-                <td><a href="{{ path('modifica_utente', { slug: utente.id }) }}" class="modifica but l"><i class="bi bi-pencil-square" style="color: darkorange"></i></a></td>
-                <td><a href="{{ path('elimina_utente', { slug: utente.id }) }}" class="modifica but l" ><i class="bi bi-trash" style="color: darkorange"></i></a></td>
+                <td><a href="{{ path('modifica_utente', { slug: utente.id }) }}" class="modifica but l">
+                        <i class="bi bi-pencil-square" style="color: darkorange"></i></a></td>
+                <td><a href="{{ path('elimina_utente', { slug: utente.id }) }}" class="modifica but l"
+                       onclick="return confirm('Vuoi davvero cancellare questo elemento?')" >
+                        <i class="bi bi-trash" style="color: darkorange"></i></a></td>
             </tr>
         {% endfor %}
     </table>

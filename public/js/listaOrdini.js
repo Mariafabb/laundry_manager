@@ -20,13 +20,23 @@ $(document).ready(function (){
             jQuery.each(data, function (index, value){
                 $("#listaOrdini").append(
                     "<tr> " +
-                    "<td>" + value.c_nome + "</td>" +
-                    "<td>" + value.c_cognome + "</td>" +
-                    "<td>" + value.data_ordine + "</td>" +
-                    "<td>" + value.data_consegna + "</td>" +
-                    "<td>" + value.note + "</td>" +
-                    "<td>" + value.u + "</td>" +
+                    "<td>" + value.id + "</td>" +
+                    "<td>" + value.nome + "</td>" +
+                    "<td>" + value.cognome + "</td>" +
+                    "<td>" + new Date(JSON.stringify(value.data_ordine.date)).toLocaleDateString()  + "</td>" +
+                    "<td>" + new Date(JSON.stringify(value.data_consegna.date)).toLocaleDateString()  + "</td>" +
+                    "<td>" + value.utente + "</td>" +
                     "<td>" + value.totale + "</td>" +
+                    "<td>" + "<a href=\""+Routing.generate('modifica_ordine')+"/"+value.id+"\" >" +
+                    "<i class='bi-pencil-square' style='padding: 8px ; background-color: white; border-style: solid; " +
+                    "border-color: darkorange; color: darkorange; font-size: 25px'></i></a>" +
+                    "</td>" +
+                    "<td>" +
+                    "<a href=\"{{ path('elimina_ordine', { slug: " + value.id + " }) }}\" " +
+                    "onClick=\"return confirm('Vuoi davvero cancellare questo elemento?')\"> " +
+                    "<i class='bi-trash' style='padding: 8px ; background-color: white; border-style: solid; " +
+                    "border-color: darkorange; color: darkorange; font-size: 25px'></i></a>" +
+                    "</td>" +
                     "</tr>"
                 );
             })

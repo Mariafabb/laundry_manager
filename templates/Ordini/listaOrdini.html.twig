@@ -6,7 +6,13 @@
 {% endblock %}
 
 {% block body %}
+    {{ parent() }}
     <style>
+        td{
+            background-color: white;
+            color: darkblue;
+            text-align: center
+        }
         .sfondo{
             background-color: darkorange; margin-top: 5%
         }
@@ -81,7 +87,7 @@
 
     </style>
     <div class="d-grid d-flex justify-content-center m-5" style="gap: 300px">
-        <a href="http://127.0.0.1:8000/ordini/nuovo" class="btn bottone link l bot" type="button">Aggiungi nuovo</a>
+        <a href="{{ path('nuovo_ordine') }}" class="btn bottone link l bot" type="button">Aggiungi nuovo</a>
         <input type="text" id="search-box" placeholder="Cerca" class="frmSearch cerca l res"/>
     </div>
 
@@ -92,7 +98,6 @@
         <th>Cognome C.</th>
         <th>Data ordine</th>
         <th>Data consegna</th>
-        <th>Note</th>
         <th>Username</th>
         <th>Totale</th>
         <th></th>
@@ -100,17 +105,19 @@
         </thead>
         <tbody id="listaOrdini">
         {% for ordine in dati %}
-            <tr class="righe" style="background-color: white;color: darkblue; text-align: center">
+            <tr class="righe">
                 <td>{{ ordine.id }}</td>
                 <td>{{ ordine.cliente.nome }}</td>
                 <td>{{ ordine.cliente.cognome }}</td>
                 <td>{{ ordine.dataOrdine|date("d-m-Y") }}</td>
                 <td>{{ ordine.dataConsegna|date("d-m-Y") }}</td>
-                <td>{{ ordine.note }}</td>
                 <td>{{ ordine.user.username }}</td>
                 <td>{{ ordine.totale }}</td>
-                <td><a href="{{ path('modifica_ordine', { slug: ordine.id }) }}" class="modifica but l"><i class="bi bi-pencil-square" style="color: darkorange"></i></a></td>
-                <td><a href="{{ path('elimina_ordine', { slug: ordine.id }) }}" class="modifica but l" ><i class="bi bi-trash" style="color: darkorange"></i></a></td>
+                <td><a href="{{ path('modifica_ordine', { slug: ordine.id }) }}" class="modifica but l">
+                        <i class="bi bi-pencil-square" style="color: darkorange"></i></a></td>
+                <td><a href="{{ path('elimina_ordine', { slug: ordine.id }) }}" class="modifica but l"
+                        onclick="return confirm('Vuoi davvero cancellare questo elemento?')" >
+                        <i class="bi bi-trash" style="color: darkorange"></i></a></td>
             </tr>
         {% endfor %}
         </tbody>

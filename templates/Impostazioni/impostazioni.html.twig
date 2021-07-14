@@ -2,7 +2,7 @@
 
 
 {% block body %}
-
+    {{ parent() }}
     <style>
         .margini{
             margin-top: 100px; margin-left: 100px;
@@ -51,11 +51,12 @@
                 </div>
             </div>
 
+    {{ form(form) }}
             {{ form_end(form) }}
 
     <div class="d-grid d-flex justify-content-center margini" style="gap: 300px">
-            <a class="btn interno l" href="http://127.0.0.1:8000/utenti" role="button" style="padding: 30px 100px">Utenti</a>
-            <a class="btn interno l" href="http://127.0.0.1:8000/impostazioni/anagrafica" role="button" style="padding: 30px">Anagrafica Aziendale</a>
+            <a class="btn interno l" href="{{ path('lista_utenti') }}" role="button" style="padding: 30px 100px">Utenti</a>
+            <a class="btn interno l" href="{{ path('anagrafica_aziendale') }}" role="button" style="padding: 30px">Anagrafica Aziendale</a>
         </div>
     </div>
 {% endblock %}

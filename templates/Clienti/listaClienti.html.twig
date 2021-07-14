@@ -6,7 +6,10 @@
 {% endblock %}
 
 {% block body %}
+    {{ parent() }}
     <style>
+        td
+        {background-color: white;color: darkblue; text-align: center}
         .sfondo{
             background-color: darkorange; margin-top: 5%
         }
@@ -80,7 +83,7 @@
 
     </style>
     <div class="d-grid d-flex justify-content-center m-5" style="gap: 300px">
-        <a href="http://127.0.0.1:8000/clienti/nuovo" class="btn bottone l bot" type="button">Aggiungi nuovo</a>
+        <a href="{{ path('nuovo_cliente') }}" class="btn bottone l bot" type="button">Aggiungi nuovo</a>
         <input type="text" id="search-box" placeholder="Cerca" class="frmSearch cerca l res"/>
         
     </div>
@@ -100,7 +103,7 @@
         </thead>
         <tbody id="listaClienti">
         {% for cliente in dati %}
-        <tr class="righe" style="background-color: white;color: darkblue; text-align: center">
+        <tr class="righe">
             <td>{{ cliente.nome }}</td>
             <td>{{ cliente.cognome }}</td>
             <td>{{ cliente.indirizzo }}</td>
@@ -108,8 +111,11 @@
             <td>{{ cliente.telefono }}</td>
             <td>{{ cliente.cellulare }}</td>
             <td>{{ cliente.email }}</td>
-            <td><a href="{{ path('modifica_cliente', { slug: cliente.id }) }}" class="modifica but l"><i class="bi bi-pencil-square" style="color: darkorange"></i></a></td>
-            <td><a href="{{ path('elimina_cliente', { slug: cliente.id }) }}" class="modifica but l" ><i class="bi bi-trash" style="color: darkorange"></i></a></td>
+            <td><a href="{{ path('modifica_cliente', { slug: cliente.id }) }}" class="modifica but l">
+                    <i class="bi bi-pencil-square" style="color: darkorange"></i></a></td>
+            <td><a href="{{ path('elimina_cliente', { slug: cliente.id }) }}" class="modifica but l"
+                   onclick="return confirm('Vuoi davvero cancellare questo elemento?')">
+                    <i class="bi bi-trash" style="color: darkorange"></i></a></td>
         </tr>
         {% endfor %}
         </tbody>

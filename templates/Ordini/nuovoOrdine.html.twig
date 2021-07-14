@@ -2,25 +2,69 @@
 
 {% block body %}
 <style>
-    .table{
-       text-align: center; font-family: Century, serif; font-size: 25px; color: darkorange; border: solid; border-width: 5px; border-color: darkorange;
+
+    table {
+        border: solid;
+        border-width: 5px;
+        border-color: darkorange;
+    }
+    th{
+        text-align: center;
+        font-family: Century, serif;
+        font-size: 25px;
+        color: darkorange;
+        padding: 10px 100px;
+    }
+    td{
+        padding: 10px 5px;
     }
 
     label {
-        font-family: Century, serif; font-size: 25px; color: darkorange; margin: 15px;
+        font-family: Century, serif;
+        font-size: 25px;
+        color: darkorange;
+        margin: 15px;
     }
 
     input {
-        border-width: 5px; border-color: darkorange; font-size: 25px;
+        border-width: 5px;
+        border-color: darkorange;
+        font-size: 25px;
     }
 
     button{
-        font-family: Century, serif; text-align: center; font-size: 25px ;color: white; background-color: darkorange; padding: 10px 30px;
-        margin: 50px; margin-left: 150px;
+        font-family: Century, serif;
+        text-align: center;
+        font-size: 25px ;
+        color: white;
+        background-color: darkorange;
+        padding: 10px 30px;
+        margin: 20px;
+
+    }
+
+    .btn {
+        font-family: Century, serif;
+        text-align: center;
+        font-size: 25px ;
+        color: white;
+        background-color: darkorange;
+        padding: 10px 30px;
+        margin: 50px;
+        margin-left: 150px;
+    }
+    .btn:hover{
+        color: #00aa88;
+        border-width: 7px;
+        border-color: #00aa88;
+        background-color: white
     }
 
     button:hover{
-        color: #00aa88; border-width: 7px; border-color: #00aa88; background-color: white
+        color: #00aa88;
+        border-width: 7px;
+        border-color: #00aa88;
+        background-color: white
     }
 
 </style>
@@ -29,11 +73,15 @@
 
 <div class="form" id="nuovo_ordine">
 
-    <div class="input-group gap-3 justify-content-center" style="margin-bottom: 20px; margin-top: 20px">
+    <div class="input-group gap-3 justify-content-center"
+         style="margin-bottom: 20px; margin-top: 20px">
         {{ form_row(form.cliente) }}
     </div>
 
-    <div class="input-group gap-3 justify-content-center" style="margin-bottom: 20px">
+    {{ form_row(form.cliente_id, {'attr': {'value': ordine.cliente.id }}) }}
+
+    <div class="input-group gap-3 justify-content-center"
+         style="margin-bottom: 20px">
         {{ form_row(form.note)}}
     </div>
 
@@ -42,20 +90,52 @@
         {{ form_row(form.numero_capi)}}
     </div>
     <div class="d-grid d-flex justify-content-center">
-    <button id="aggiungiCapo">Aggiungi Capo</button>
+    <div class="btn" id="aggiungiCapo">Aggiungi Capo</div>
     </div>
 
-    <div id="nuovo_ordine_ordiniRows" class="table" style="margin-bottom: 65px">
-        {{ form_row(form.ordiniRows) }}
+    <table>
+        <thead>
+        <tr>
+            <th>Id Capo</th>
+            <th>Descrizione</th>
+            <th>Importo</th>
+            <th>Numero capi</th>
+        </tr>
+        </thead>
+        {% set i = 0 %}
+        {% for ordineRow in ordiniRows %}
+        <tr>
+            <div numeroRiga='{{ i }}'>
+
+                <td ><input readonly='readonly'  id='form_ordini_row_{{ i }}_idCapo' name='form_ordini_row[{{ i }}][idCapo]' value='{{  ordineRow.capo.id }}' style='text-align: center'></td>
+
+
+                <td ><input readonly='readonly' id='form_ordini_row_{{ i }}_descrizioneCapo' name='form_ordini_row[{{ i }}][descrizioneCapo]' value='{{ ordineRow.capo.tipo }}' style='text-align: center'></td>
+
+
+                <td ><input readonly='readonly' id='form_ordini_row_{{ i }}_prezzoCapo' name='form_ordini_row[{{ i }}][prezzoCapo]' value='{{ ordineRow.capo.prezzo }}' style='text-align: center'></td>
+
+
+                <td ><input id='form_ordini_row_{{ i }}_numeroCapi' name='form_ordini_row[{{ i }}][numeroCapi]' value='{{ ordineRow.numeroCapi }}' style='text-align: center'></td>
+
+            <td class='d-grid d-flex justify-content-center' onclick='eliminaRiga($(this))'> <button> Elimina </button> </td>"
+
+            </div>
+
+        </tr>
+        {% endfor %}
+    </table>
     </div>
 
     <div class="input-group gap-3 justify-content-center">
         {{ form_row(form.totale)}}
     </div>
 
-    <div class="d-flex justify-content-center" style="margin-bottom: 20px">
+    <div class="d-flex justify-content-center"
+         style="margin-left: 100px">
 
-        {{ form(form) }}
+        {#  TODO: esplicitare pulsante submit #}
+        {{ form_row(form.salva)}}
 
     </div>
  </div>

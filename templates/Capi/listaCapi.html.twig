@@ -6,8 +6,11 @@
 {% endblock %}
 
 {% block body %}
-
+    {{ parent() }}
     <style>
+        td{
+        background-color: white;color: darkblue; text-align: center
+        }
         .sfondo{
             background-color: darkorange; margin-top: 5%
         }
@@ -83,7 +86,7 @@
 
     </style>
     <div class="d-grid d-flex justify-content-center m-5" style="gap: 300px">
-        <a href="http://127.0.0.1:8000/capi/nuovo" class="btn bottone l bot" type="button">Aggiungi nuovo</a>
+        <a href="{{ path('nuovo_capo') }}" class="btn bottone l bot" type="button">Aggiungi nuovo</a>
         <input type="text" id="search-box" placeholder="Cerca" class="frmSearch cerca l res"/>
     </div>
 
@@ -99,18 +102,17 @@
         </thead>
         <tbody id="listaCapi">
         {% for capo in dati %}
-            <tr class="righe" style="background-color: white;color: darkblue; text-align: center">
+            <tr class="righe">
                 <td>{{ capo.tipo }}</td>
                 <td>{{ capo.sottotipo }}</td>
                 <td>{{ capo.descrizione }}</td>
                 <td>{{ capo.prezzo }}</td>
                 <td>{{ capo.giornilavorazione }}</td>
-                <td><a href="{{ path('modifica_capo', { slug: capo.id }) }}" class="modifica but l"><i class="bi bi-pencil-square" style="color: darkorange"></i></a></td>
+                <td><a href="{{ path('modifica_capo', { slug: capo.id }) }}" class="modifica but l">
+                        <i class="bi bi-pencil-square" style="color: darkorange"></i></a></td>
                 <td><a href="{{ path('elimina_capo', { slug: capo.id }) }}" class="modifica but l"
-                       onclick="return confirm('Vuoi davvero cancellare questo registrazione?')" >
-                        <i class="bi bi-trash" style="color: darkorange"></i>
-                    </a>
-                </td>
+                       onclick="return confirm('Vuoi davvero cancellare questo elemento?')" >
+                        <i class="bi bi-trash" style="color: darkorange"></i></a></td>
             </tr>
         {% endfor %}
         </tbody>

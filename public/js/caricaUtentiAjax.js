@@ -27,7 +27,6 @@ function autoCompletition (fieldInput,  fieldOutput, action, search = null) {
                 // Set selection
                 fieldInput.val(ui.item.label); // display the selected text
                 fieldOutput.val(ui.item.value);
-                numeroMastro = ui.item.value;
 
                 if(action == "searchCapi") {
                     importoCapo = ui.item.prezzo;
