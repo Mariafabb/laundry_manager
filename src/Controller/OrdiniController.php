@@ -172,7 +172,7 @@ class OrdiniController extends AbstractController
     }
 
         /**
-         * @Route("/ordini/elimina/{slug}", name="elimina_ordine")
+         * @Route("/ordini/elimina/{slug}", name="elimina_ordine", options={"expose"=true})
          */
         public function eliminaOrdine($slug, OrdiniRepository $or){
             $ordine = $or->find($slug);
