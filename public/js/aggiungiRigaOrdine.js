@@ -17,7 +17,7 @@ $(document).ready(
     function() {
         var tabellaCapi = $("#nuovo_ordine_ordiniRows");
         //header tabella capi in ordine
-        tabellaCapi.append("<table class='thead'>" +
+        tabellaCapi.append("<table class='justify-content-center'>" +
             "<th class=\"col\">id Capo</th>" +
             "<th class=\"col\">Descrizione</th>" +
             "<th class=\"col\">Importo</th>" +
@@ -74,6 +74,8 @@ $(document).ready(
                     "<div class='d-grid d-flex justify-content-center' onclick='eliminaRiga($(this))'> " +
                     "<button> Elimina </button> </div>" +
                     "</div>");
+
+
                 importiCapi[i] = importoCapo * numeroCapi.val();
                 totale.val(totaleNumerico += importiCapi[i]);
                 ++i;

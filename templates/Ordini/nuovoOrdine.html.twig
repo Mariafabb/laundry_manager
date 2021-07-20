@@ -102,46 +102,40 @@
         </table>
     </div>
 
-  {#   {% if ordiniRows is defined %}
-    <table>
-        <thead>
-        <tr>
-            <th>Id Capo</th>
-            <th>Descrizione</th>
-            <th>Importo</th>
-            <th>Numero capi</th>
-        </tr>
-        </thead>
-        <tbody>
+    {% if ordiniRows is defined %}
+        {% set i = 0 %}
+        <script>
+            $(document).ready(function() {
+                        {% for ordineRow in ordiniRows %}
 
-            {% set i = 0 %}
-            {% for ordineRow in ordiniRows %}
-            <tr>
-                <div numeroRiga='{{ i }}'>
+                $("#nuovo_ordine_ordiniRows").append(
+                        "<tr> " +
+                        " <div numeroRiga='{{ i }}'> " +
 
-                    <td ><input readonly='readonly'  id='form_ordini_row_{{ i }}_idCapo' name='form_ordini_row[{{ i }}][idCapo]' value='{{  ordineRow.capo.id }}' style='text-align: center'></td>
+                        "  <td ><input readonly='readonly'  id='form_ordini_row_{{ i }}_idCapo' name='form_ordini_row[{{ i }}][idCapo]' value='{{ ordineRow.capo.id }}' style='text-align: center'/></td>" +
 
 
-                    <td ><input readonly='readonly' id='form_ordini_row_{{ i }}_descrizioneCapo' name='form_ordini_row[{{ i }}][descrizioneCapo]' value='{{ ordineRow.capo.tipo }}' style='text-align: center'></td>
+                        " <td ><input readonly='readonly' id='form_ordini_row_{{ i }}_descrizioneCapo' name='form_ordini_row[{{ i }}][descrizioneCapo]' value='{{ ordineRow.capo.tipo }}' style='text-align: center'/></td>" +
 
 
-                    <td ><input readonly='readonly' id='form_ordini_row_{{ i }}_prezzoCapo' name='form_ordini_row[{{ i }}][prezzoCapo]' value='{{ ordineRow.capo.prezzo }}' style='text-align: center'></td>
+                        "<td ><input readonly='readonly' id='form_ordini_row_{{ i }}_prezzoCapo' name='form_ordini_row[{{ i }}][prezzoCapo]' value='{{ ordineRow.capo.prezzo }}' style='text-align: center'/></td>" +
 
 
-                    <td ><input id='form_ordini_row_{{ i }}_numeroCapi' name='form_ordini_row[{{ i }}][numeroCapi]' value='{{ ordineRow.numeroCapi }}' style='text-align: center'></td>
+                        "<td ><input id='form_ordini_row_{{ i }}_numeroCapi' name='form_ordini_row[{{ i }}][numeroCapi]' value='{{ ordineRow.numeroCapi }}' style='text-align: center'/></td>" +
 
-                <td class='d-grid d-flex justify-content-center' onclick='eliminaRiga($(this))'> <button> Elimina </button> </td>"
+                        "<td class='d-grid d-flex justify-content-center' onclick='eliminaRiga($(this))'> <button> Elimina </button> </td> " +
 
-                </div>
+                        "</div> " +
 
-            </tr>
+                        "</tr>");
+
+
             {% endfor %}
-
-        </tbody>
-    </table>
+            });
+        </script>
     {% endif %}
     </div>
-#}
+
     <div class="input-group gap-3 justify-content-center">
         {{ form_row(form.totale)}}
     </div>
