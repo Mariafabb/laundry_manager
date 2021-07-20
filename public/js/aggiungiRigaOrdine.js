@@ -33,6 +33,7 @@ $(document).ready(
 
         //ricerca capi per aggiunta a tabella
         totale = $("#nuovo_ordine_totale");
+        totaleNumerico = 0;
         descrizioneCapo = $("#nuovo_ordine_nuovo_capo");
         idCapo = $("#nuovo_ordine_nuovo_capo_id");
         numeroCapi = $("#nuovo_ordine_numero_capi");
@@ -73,14 +74,16 @@ $(document).ready(
                     "<div class='d-grid d-flex justify-content-center' onclick='eliminaRiga($(this))'> " +
                     "<button> Elimina </button> </div>" +
                     "</div>");
+                importiCapi[i] = importoCapo * numeroCapi.val();
+                totale.val(totaleNumerico += importiCapi[i]);
                 ++i;
-                importiCapi[i] = importoCapo;
-                totale.val(totaleCapi += importoCapo * numeroCapi.val());
                 }
             });
     });
 
 function eliminaRiga (e) {
+    var numeroRiga = e.parent().attr('numeroRiga');
+    var importo = importiCapi[numeroRiga];
+    totale.val(totaleNumerico -= importo);
     e.parent().remove();
-    totale.val(totale -= importiCapi[e.parent().attr('numeroRiga')]);
 }

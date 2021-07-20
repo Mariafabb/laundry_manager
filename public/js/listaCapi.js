@@ -25,7 +25,7 @@ $(document).ready(function (){
                     "<td>" + value.descrizione + "</td>" +
                     "<td>" + value.prezzo + "</td>" +
                     "<td>" + value.giorni_lavorazione + "</td>" +
-                    "<td>" + "<a href=\""+Routing.generate('modifica_capo')+"/"+value.id+"\" >" +
+                   "<td>" + "<a href=\""+Routing.generate('modifica_capo')+"/"+value.id+" >" +
                     "<i class='bi-pencil-square' style='padding: 8px ; background-color: white; border-style: solid; " +
                     "border-color: darkorange; color: darkorange; font-size: 25px'></i></a>" +
                     "</td>" +
@@ -33,7 +33,7 @@ $(document).ready(function (){
                     "<i class='bi-trash' style='padding: 8px ; background-color: white; border-style: solid; " +
                     "border-color: darkorange; color: darkorange; font-size: 25px'></i></a>" +
                     "</td>" +
-                    "</tr>"
+                   "</tr>"
                 );
             })
         });

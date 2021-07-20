@@ -27,8 +27,7 @@ $(document).ready(function (){
                     "<td>" + value.telefono + "</td>" +
                     "<td>" + value.cellulare + "</td>" +
                     "<td>" + value.email + "</td>" +
-                    "<td>" + "<a href=\""+Routing.generate('modifica_cliente')+"/"+value.id+"\" >" +
-                    "<i class='bi-pencil-square' style='padding: 8px ; background-color: white; border-style: solid; " +
+                    "<td>" + "<a href=\"" + Routing.generate('modifica_cliente') + "/" + value.id + "\" ><i class='bi-pencil-square' style='padding: 8px ; background-color: white; border-style: solid; " +
                     "border-color: darkorange; color: darkorange; font-size: 25px'></i></a>" +
                     "</td>" +
                     "<td>" + "<a href=\""+Routing.generate('elimina_cliente')+"/"+value.id+"\" > " +
