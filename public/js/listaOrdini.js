@@ -31,9 +31,7 @@ $(document).ready(function (){
                     "<i class='bi-pencil-square' style='padding: 8px ; background-color: white; border-style: solid; " +
                     "border-color: darkorange; color: darkorange; font-size: 25px'></i></a>" +
                     "</td>" +
-                    "<td>" +
-                    "<a href=\"{{ path('elimina_ordine', { slug: " + value.id + " }) }}\" " +
-                    "onClick=\"return confirm('Vuoi davvero cancellare questo elemento?')\"> " +
+                    "<td>" + "<a href=\""+Routing.generate('elimina_ordine')+"/"+value.id+"\" > " +
                     "<i class='bi-trash' style='padding: 8px ; background-color: white; border-style: solid; " +
                     "border-color: darkorange; color: darkorange; font-size: 25px'></i></a>" +
                     "</td>" +

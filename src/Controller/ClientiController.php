@@ -73,7 +73,7 @@ class ClientiController extends AbstractController
     }
 
     /**
-     * @Route("/clienti/modifica/{slug}", name="modifica_cliente")
+     * @Route("/clienti/modifica/{slug}", name="modifica_cliente", options={"expose"=true})
      */
     public function modificaCliente($slug, Request $request)
     {
@@ -95,7 +95,7 @@ class ClientiController extends AbstractController
     }
 
     /**
-    * @Route("/clienti/{slug}", name="elimina_cliente")
+    * @Route("/clienti/{slug}", name="elimina_cliente", options={"expose"=true})
     */
     public function eliminaCliente($slug, ClientiRepository $cr){
         $cliente = $cr->find($slug);

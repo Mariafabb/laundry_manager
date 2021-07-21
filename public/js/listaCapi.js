@@ -25,17 +25,15 @@ $(document).ready(function (){
                     "<td>" + value.descrizione + "</td>" +
                     "<td>" + value.prezzo + "</td>" +
                     "<td>" + value.giorni_lavorazione + "</td>" +
-                    "<td>" + "<a href=\"{{ path(modifica_capo, { slug: value.id  }) }}\" >" +
+                   "<td>" + "<a href=\""+Routing.generate('modifica_capo')+"/"+value.id+" >" +
                     "<i class='bi-pencil-square' style='padding: 8px ; background-color: white; border-style: solid; " +
                     "border-color: darkorange; color: darkorange; font-size: 25px'></i></a>" +
                     "</td>" +
-                    "<td>" +
-                    "<a href=\"{{ path('elimina_capo', { slug: " + value.id + " }) }}\" " +
-                     "onClick=\"return confirm('Vuoi davvero cancellare questo elemento?')\"> " +
+                    "<td>" + "<a href=\""+Routing.generate('elimina_capo')+"/"+value.id+"\" > " +
                     "<i class='bi-trash' style='padding: 8px ; background-color: white; border-style: solid; " +
                     "border-color: darkorange; color: darkorange; font-size: 25px'></i></a>" +
                     "</td>" +
-                    "</tr>"
+                   "</tr>"
                 );
             })
         });

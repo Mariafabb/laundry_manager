@@ -172,7 +172,7 @@ class OrdiniController extends AbstractController
     }
 
         /**
-         * @Route("/ordini/elimina/{slug}", name="elimina_ordine")
+         * @Route("/ordini/elimina/{slug}", name="elimina_ordine", options={"expose"=true})
          */
         public function eliminaOrdine($slug, OrdiniRepository $or){
             $ordine = $or->find($slug);
@@ -219,8 +219,8 @@ class OrdiniController extends AbstractController
             $text.= "Ordine numero" .$ordine->getId() ." del ".$ordine->getDataOrdine()->format("d-m-Y H:i")."\n";
             $text.= "Descrizione       Q.ta    Euro\n";
             foreach ($ordine->getOrdiniRows() as $ordineRow){
-                $text.= $ordineRow->getCapo()->getTipo() ."                    ";
-                $text.= $ordineRow->getNumeroCapi() ."   ";
+                $text.= $ordineRow->getCapo()->getTipo() ."             ";
+                $text.= $ordineRow->getNumeroCapi() ."       ";
                 $text.= $ordineRow->getImporto() ."\n";
             }
             $text.= "\n\n";

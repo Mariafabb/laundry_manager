@@ -70,7 +70,7 @@ class CapiController extends AbstractController
     }
 
     /**
-     * @Route("/capi/modifica/{slug}", name="modifica_capo")
+     * @Route("/capi/modifica/{slug}", name="modifica_capo", options={"expose"=true})
      */
     public function modificaCapo($slug, Request $request){
 
@@ -92,7 +92,7 @@ class CapiController extends AbstractController
     }
 
     /**
-     * @Route("/capi/elimina/{slug}", name="elimina_capo")
+     * @Route("/capi/elimina/{slug}", name="elimina_capo", options={"expose"=true})
      */
     public function eliminaCapo($slug, CapiRepository $cr){
         $capo = $cr->find($slug);
