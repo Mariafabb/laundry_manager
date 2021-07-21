@@ -201,7 +201,7 @@ class OrdiniController extends AbstractController
 
         public function stampaOrdine(Ordini $ordine){
             //$connector = new FilePrintConnector("scontrini");
-            $connector = new WindowsPrintConnector("scontrini");
+            $connector = new WindowsPrintConnector("localhost/scontrini");
 
             $printer = new Printer($connector);
 
