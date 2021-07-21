@@ -17,7 +17,7 @@ $(document).ready(
     function() {
         var tabellaCapi = $("#nuovo_ordine_ordiniRows");
         //header tabella capi in ordine
-        tabellaCapi.append("<table class='justify-content-center'>" +
+        tabellaCapi.append("<thead class='justify-content-center'>" +
             "<th class=\"col\">id Capo</th>" +
             "<th class=\"col\">Descrizione</th>" +
             "<th class=\"col\">Importo</th>" +
@@ -45,6 +45,11 @@ $(document).ready(
 
         //aggiunta capo a tabella dopo ricerca
         $("#aggiungiCapo").click(function () {
+            tabellaCapiChildren = tabellaCapi.children('tr');
+            tabellaCapiChildren.each(function (){
+                i = $(this).attr('numeroRiga');
+            })
+            i++;
             if (numeroCapi.val() == "") {
                 alert("Inserire il numero di capi");
             } else if (descrizioneCapo.val() == "") {
@@ -52,27 +57,25 @@ $(document).ready(
             } else {
                 tabellaCapi.append(
                     "<div class='container' numeroRiga='"+i+"'>" +
-                    "<div class='d-grid d-flex justify-content-center'>"+
 
-                    "<div class='d-block'>" +
-                    "<input readonly='readonly'  id='form_ordini_row_" + i + "_idCapo' name='form_ordini_row[" + i + "]" +
-                    "[idCapo]' value='" + idCapo.val() + "' style='text-align: center'></div>" +
+                    "<td class='d-block justify-content-center'>" +
+                    "<input readonly='readonly' class='w-25'  id='form_ordini_row_" + i + "_idCapo' name='form_ordini_row[" + i + "]" +
+                    "[idCapo]' value='" + idCapo.val() + "' style='text-align: center'></td>" +
 
-                    "<div class='d-block'>" +
-                    "<input readonly='readonly' id='form_ordini_row_" + i + "_descrizioneCapo' name='form_ordini_row[" + i + "]" +
-                    "[descrizioneCapo]' value='" + descrizioneCapo.val() + "'></div>" +
+                    "<td class='d-block justify-content-center'>" +
+                    "<input readonly='readonly'  class='w-75'  id='form_ordini_row_" + i + "_descrizioneCapo' name='form_ordini_row[" + i + "]" +
+                    "[descrizioneCapo]' value='" + descrizioneCapo.val() + "'></td>" +
 
-                    "<div class='d-block'>" +
-                    "<input readonly='readonly' id='form_ordini_row_" + i + "_prezzoCapo' name='form_ordini_row[" + i + "]" +
-                    "[prezzoCapo]' value='" + importoCapo + "'></div>" +
+                    "<td class='d-block justify-content-center'>" +
+                    "<input readonly='readonly' class='w-25'  id='form_ordini_row_" + i + "_prezzoCapo' name='form_ordini_row[" + i + "]" +
+                    "[prezzoCapo]' value='" + importoCapo + "'></td>" +
 
-                    "<div class='d-block'>" +
-                    "<input id='form_ordini_row_" + i + "_numeroCapi' name='form_ordini_row[" + i + "]" +
-                    "[numeroCapi]' value='" + numeroCapi.val() + "'></div>" +
-                    "</div>"+
+                    "<td class='d-block justify-content-center'>" +
+                    "<input id='form_ordini_row_" + i + "_numeroCapi' class='w-25'  name='form_ordini_row[" + i + "]" +
+                    "[numeroCapi]' value='" + numeroCapi.val() + "'></td>" +
 
-                    "<div class='d-grid d-flex justify-content-center' onclick='eliminaRiga($(this))'> " +
-                    "<button> Elimina </button> </div>" +
+                    "<td class='d-block justify-content-center' onclick='eliminaRiga($(this))'> " +
+                    "<button> Elimina </button> </td>" +
                     "</div>");
 
 

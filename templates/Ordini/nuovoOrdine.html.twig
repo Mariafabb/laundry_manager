@@ -75,11 +75,7 @@
 
     <div class="input-group gap-3 justify-content-center"
          style="margin-bottom: 20px; margin-top: 20px">
-        {% if form.cliente is defined %}
-            {{ form_row(form.cliente, {'attr': {'readonly': 'readonly' }}) }}
-        {% else %}
             {{ form_row(form.cliente) }}
-        {% endif %}
     </div>
 
     {% if ordine is defined %}
@@ -125,6 +121,7 @@
 
 
                         "<td ><input id='form_ordini_row_{{ i }}_numeroCapi' name='form_ordini_row[{{ i }}][numeroCapi]' value='{{ ordineRow.numeroCapi }}' style='text-align: center'/></td>" +
+
 
                         "<td class='d-grid d-flex justify-content-center' onclick='eliminaRiga($(this))'> <button> Elimina </button> </td> " +
 

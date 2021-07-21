@@ -21,11 +21,13 @@ class NuovoOrdineType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+        $readOnly = $options['edit'] === true ? true : false;
+
         $builder
             ->add('cliente', ClientiSelectTextType::class,[
             'required' => false,
                 'attr' => [
-                    'readonly' => true
+                    'readonly' => $readOnly
                 ]
             ])
             ->add('cliente_id', HiddenType::class, [
@@ -33,9 +35,7 @@ class NuovoOrdineType extends AbstractType
             ])
 //            ->add('user', UserSelectTextType::class)
             ->add('totale',NumberType::class, [
-                'attr' => [
-                    'readonly' => true,
-                    ],
+
                 ])
             ->add('note',TextType::class, [
                 'required' => false,
@@ -70,6 +70,7 @@ class NuovoOrdineType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => Ordini::class,
+            'edit' => false,
         ]);
     }
 }
