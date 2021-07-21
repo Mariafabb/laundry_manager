@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="WebServers">
+    <option name="servers">
+      <webServer id="be5d8e6a-225c-4c3a-8da1-14687bfa8fac" name="lavanderia_solari" url="http://lavanderiasolari.dyndns.org">
+        <fileTransfer rootFolder="/var/www/html/lavanderiasolari/public_html/laundry_manager/" accessType="SFTP" host="lamp1.dyndns.org" port="22" sshConfigId="eecade59-26d1-476b-b9b8-6460a371e4a4" sshConfig="gianlucafazio@lamp1.dyndns.org:22 password">
+          <advancedOptions>
+            <advancedOptions dataProtectionLevel="Private" passiveMode="true" shareSSLContext="true" />
+          </advancedOptions>
+        </fileTransfer>
+      </webServer>
+    </option>
+  </component>
+</project>
