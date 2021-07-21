@@ -21,13 +21,13 @@ class Ordini{
 
     /**
      * @ORM\ManyToOne(targetEntity=Clienti::class, inversedBy="ordiniCliente")
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\JoinColumn(nullable=false, onDelete="CASCADE")
      */
     private $cliente;
 
     /**
      * @ORM\ManyToOne(targetEntity=User::class, inversedBy="ordiniUser")
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\JoinColumn(nullable=false, onDelete="CASCADE")
      */
     private $user;
 
