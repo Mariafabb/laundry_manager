@@ -4,6 +4,7 @@
 namespace App\Form;
 
 use App\Entity\Clienti;
+use App\Entity\Ordini;
 use App\Form\Transformations\DescrizioneToCliente;
 use App\Repository\ClientiRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -48,7 +49,6 @@ class ClientiSelectTextType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'invalid_message' => 'Cliente non trovato',
             'finder_callback' => function (ClientiRepository $clientiRepository, string $cliente_id) {
                 $result = $this->clientiRepository->findOneBy(["id" => $cliente_id]);
                 return $result;

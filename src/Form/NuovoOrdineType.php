@@ -23,7 +23,10 @@ class NuovoOrdineType extends AbstractType
     {
         $builder
             ->add('cliente', ClientiSelectTextType::class,[
-            'required' => false
+            'required' => false,
+                'attr' => [
+                    'readonly' => true
+                ]
             ])
             ->add('cliente_id', HiddenType::class, [
                 'mapped' => false,

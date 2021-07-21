@@ -75,7 +75,11 @@
 
     <div class="input-group gap-3 justify-content-center"
          style="margin-bottom: 20px; margin-top: 20px">
-        {{ form_row(form.cliente) }}
+        {% if form.cliente is defined %}
+            {{ form_row(form.cliente, {'attr': {'readonly': 'readonly' }}) }}
+        {% else %}
+            {{ form_row(form.cliente) }}
+        {% endif %}
     </div>
 
     {% if ordine is defined %}
@@ -109,8 +113,7 @@
                         {% for ordineRow in ordiniRows %}
 
                 $("#nuovo_ordine_ordiniRows").append(
-                        "<tr> " +
-                        " <div numeroRiga='{{ i }}'> " +
+                        "<tr numeroRiga='{{ i }}'> " +
 
                         "  <td ><input readonly='readonly'  id='form_ordini_row_{{ i }}_idCapo' name='form_ordini_row[{{ i }}][idCapo]' value='{{ ordineRow.capo.id }}' style='text-align: center'/></td>" +
 
@@ -125,11 +128,13 @@
 
                         "<td class='d-grid d-flex justify-content-center' onclick='eliminaRiga($(this))'> <button> Elimina </button> </td> " +
 
-                        "</div> " +
+
 
                         "</tr>");
 
-
+                importiCapi[{{ i }}] = {{ ordineRow.capo.prezzo }} * {{ ordineRow.numeroCapi }};
+                totale.val(totaleNumerico += importiCapi[{{ i }}]);
+                {% set i = i+1 %}
             {% endfor %}
             });
         </script>

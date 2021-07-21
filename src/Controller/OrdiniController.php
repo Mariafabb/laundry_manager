@@ -159,9 +159,11 @@ class OrdiniController extends AbstractController
         $form = $this->createForm(NuovoOrdineType::class, $ordine);
 
         $form->handleRequest($request);
-        if ($form->isSubmitted() && $form->isValid()) {
-            $ordine = $form->getData();
-            return $this->salvaOrdine($ordine);
+        if ($form->isSubmitted()) {
+            /** @var Ordini $ordineEdited */
+            $ordineEdited = $form->getData();
+            $ordineEdited->setCliente($ordine->getCliente());
+            return $this->salvaOrdine($ordineEdited);
         }
 
         return $this->render("Ordini/nuovoOrdine.html.twig", [
