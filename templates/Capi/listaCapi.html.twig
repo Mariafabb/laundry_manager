@@ -9,7 +9,7 @@
     {{ parent() }}
     <style>
         td{
-        background-color: white;color: darkblue; text-align: center
+        background-color: white;color: darkblue; text-align: center; width: 5%;
         }
         .sfondo{
             background-color: darkorange; margin-top: 5%
@@ -28,24 +28,24 @@
         }
         @media screen and (min-width: 801px) {
             thead.response {
-                font-size: 20px;
+                font-size: 25px;
             }
         }
 
         @media screen and (max-width: 800px) {
             thead.response {
-                font-size: 15px;
+                font-size: 20px;
             }
         }
         @media screen and (min-width: 801px) {
             tr.righe {
-                font-size: 15px;
+                font-size: 20px;
             }
         }
 
         @media screen and (max-width: 800px) {
             tr.righe {
-                font-size: 10px;
+                font-size: 15px;
             }
         }
 
@@ -94,7 +94,6 @@
         <thead class = "sfondo titolo response">
         <th>Tipo</th>
         <th>Sottotipo</th>
-        <th>Descrizione</th>
         <th>Prezzo</th>
         <th>G.Lavorazione</th>
         <th></th>
@@ -105,7 +104,6 @@
             <tr class="righe">
                 <td>{{ capo.tipo }}</td>
                 <td>{{ capo.sottotipo }}</td>
-                <td>{{ capo.descrizione }}</td>
                 <td>{{ capo.prezzo }}</td>
                 <td>{{ capo.giornilavorazione }}</td>
                 <td><a href="{{ path('modifica_capo', { slug: capo.id }) }}" class="modifica but l">

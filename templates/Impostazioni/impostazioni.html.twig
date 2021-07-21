@@ -4,6 +4,9 @@
 {% block body %}
     {{ parent() }}
     <style>
+        div{
+            text-align: center;
+        }
         .margini{
             margin-top: 100px; margin-left: 100px;
         }
@@ -12,7 +15,7 @@
         }
         .l:hover {color: darkorange; border-width: 5px; border-color: darkorange; background-color: white}
 
-        .inp {
+        input {
            border: solid; border-width: 5px; border-color: #00aa88; font-size: 25px;
         }
         form {
@@ -24,10 +27,27 @@
         select{
             border-width: 5px; border-color: #00aa88; font-size: 25px; color: #00aa88;
         }
-        .i:hover{color: darkorange; border-width: 5px; border-color: darkorange; background-color: white}
+        input:hover{color: darkorange; border-width: 5px; border-color: darkorange; background-color: white}
 
         select:focus {
             color: darkorange; border-width: 5px; border-color: darkorange; background-color: white
+        }
+
+        button{
+            font-family: Century, serif;
+            text-align: center;
+            vertical-align: middle;
+            font-size: 25px ;
+            color: white;
+            background-color: #00aa88;
+            padding: 5px 30px;
+        }
+
+        button:hover{
+            color: darkorange;
+            border-width: 7px;
+            border-color: darkorange;
+            background-color: white
         }
 
 
@@ -36,22 +56,21 @@
 
             <div class="input-group">
 
-                <div class="input-group justify-content-center" style="margin-bottom: 20px; gap: 50px">
-                {{ form_label(form.logo) }}
-                    <div class="row inp i">
-                    {{ form(form.logo) }}
-                    </div>
+                <div class="input-group justify-content-center" style="margin-bottom: 20px">
+                {{ form_row(form.logo) }}
                 </div>
 
-                <div class="input-group justify-content-center" style="margin-bottom: 20px; gap: 50px">
-                    {{ form_label(form.metodo_calcolo_consegna) }}
-                    <div class="row">
-                        {{ form(form.metodo_calcolo_consegna) }}
-                    </div>
+                <div class="input-group justify-content-center" style="margin-bottom: 20px">
+                    {{ form_row(form.metodo_calcolo_consegna) }}
+                </div>
+
+            <div class="input-group justify-content-center" style="margin-bottom: 20px">
+                {{ form_row(form.numero_giorni_lavorazione) }}
                 </div>
             </div>
 
-    {{ form(form) }}
+            {{ form_row(form.salva) }}
+
             {{ form_end(form) }}
 
     <div class="d-grid d-flex justify-content-center margini" style="gap: 300px">

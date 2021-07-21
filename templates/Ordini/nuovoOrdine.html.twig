@@ -3,44 +3,44 @@
 {% block body %}
 <style>
 
-    table {
-        border: solid;
-        border-width: 5px;
-        border-color: darkorange;
+    tr{
+        text-align: center;
+    }
+    .al { margin: auto;
+        width: 65%;
+
     }
     th{
+        border: 5px solid darkorange;
         text-align: center;
         font-family: Century, serif;
         font-size: 25px;
         color: darkorange;
-        padding: 10px 100px;
     }
-    td{
-        padding: 10px 5px;
-    }
+
 
     label {
         font-family: Century, serif;
         font-size: 25px;
         color: darkorange;
-        margin: 15px;
+        width: 70%;
     }
 
     input {
         border-width: 5px;
         border-color: darkorange;
         font-size: 25px;
+        width: 70%;
     }
 
     button{
         font-family: Century, serif;
         text-align: center;
+        vertical-align: middle;
         font-size: 25px ;
         color: white;
         background-color: darkorange;
-        padding: 10px 30px;
-        margin: 20px;
-
+        padding: 5px 30px;
     }
 
     .btn {
@@ -50,8 +50,6 @@
         color: white;
         background-color: darkorange;
         padding: 10px 30px;
-        margin: 50px;
-        margin-left: 150px;
     }
     .btn:hover{
         color: #00aa88;
@@ -73,34 +71,25 @@
 
 <div class="form" id="nuovo_ordine">
 
-    <div class="input-group gap-3 justify-content-center"
-         style="margin-bottom: 20px; margin-top: 20px">
+    <div class="input-group justify-content-center"
+         style="margin-bottom: 60px; margin-top: 30px">
             {{ form_row(form.cliente) }}
+            {{ form_row(form.note)}}
     </div>
 
     {% if ordine is defined %}
         {{ form_row(form.cliente_id, {'attr': {'value': ordine.cliente.id }}) }}
     {% endif %}
 
-    <div class="input-group gap-3 justify-content-center"
-         style="margin-bottom: 20px">
-        {{ form_row(form.note)}}
-    </div>
-
-    <div class="input-group gap-3 justify-content-center">
+    <div class="input-group justify-content-center" style="margin-bottom: 30px">
         {{ form_row(form.nuovo_capo)}}
         {{ form_row(form.numero_capi)}}
     </div>
-    <div class="d-grid d-flex justify-content-center">
+    <div class="d-grid d-flex justify-content-center" style="margin-bottom: 60px">
     <div class="btn" id="aggiungiCapo">Aggiungi Capo</div>
     </div>
-
-    <div class="d-grid d-flex justify-content-center"
-         style="margin-bottom: 65px">
-        <table>
-            {{ form_row(form.ordiniRows) }}
-        </table>
-    </div>
+ <div class="input-group justify-content-center al" style="margin-bottom: 40px">
+    {{ form_row(form.ordiniRows) }}
 
     {% if ordiniRows is defined %}
         {% set i = 0 %}
@@ -109,7 +98,7 @@
                         {% for ordineRow in ordiniRows %}
 
                 $("#nuovo_ordine_ordiniRows").append(
-                        "<tr numeroRiga='{{ i }}'> " +
+                        "<tr  numeroRiga='{{ i }}'> " +
 
                         "  <td ><input readonly='readonly'  id='form_ordini_row_{{ i }}_idCapo' name='form_ordini_row[{{ i }}][idCapo]' value='{{ ordineRow.capo.id }}' style='text-align: center'/></td>" +
 
@@ -121,7 +110,6 @@
 
 
                         "<td ><input id='form_ordini_row_{{ i }}_numeroCapi' name='form_ordini_row[{{ i }}][numeroCapi]' value='{{ ordineRow.numeroCapi }}' style='text-align: center'/></td>" +
-
 
                         "<td class='d-grid d-flex justify-content-center' onclick='eliminaRiga($(this))'> <button> Elimina </button> </td> " +
 
@@ -138,18 +126,13 @@
     {% endif %}
     </div>
 
-    <div class="input-group gap-3 justify-content-center">
+    <div class="input-group justify-content-center">
         {{ form_row(form.totale)}}
     </div>
 
-    <div class="d-flex justify-content-center"
-         style="margin-left: 100px">
-
-        {#  TODO: esplicitare pulsante submit #}
+    <div class="d-flex justify-content-center" style="margin-top: 10px">
         {{ form_row(form.salva)}}
-
     </div>
- </div>
 
     {{ form_end(form) }}
 
