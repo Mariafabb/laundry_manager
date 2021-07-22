@@ -10,7 +10,13 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 
+/**
+ * Class CapiController
+ * @package App\Controller
+ * @IsGranted("ROLE_ADMIN")
+ */
 class CapiController extends AbstractController
 {
     private EntityManagerInterface $em;

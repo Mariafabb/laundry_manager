@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Capi;
 use App\Entity\Clienti;
 use App\Entity\Ordini;
+use Doctrine\Common\Annotations\Annotation\Required;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -12,10 +13,12 @@ use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Security;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 
 /**
  * Class AuxUtilityController
  * @package App\Controller
+ * @IsGranted("ROLE_ADMIN")
  */
 
 class AuxUtilityController extends AbstractController

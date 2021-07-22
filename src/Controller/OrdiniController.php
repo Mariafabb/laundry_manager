@@ -24,7 +24,13 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Security;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 
+/**
+ * Class OrdiniController
+ * @package App\Controller
+ * @IsGranted("ROLE_ADMIN")
+ */
 class OrdiniController extends AbstractController
 {
     private EntityManagerInterface $em;
