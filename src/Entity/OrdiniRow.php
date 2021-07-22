@@ -19,7 +19,7 @@ class OrdiniRow
 
     /**
      * @ORM\ManyToOne(targetEntity=Capi::class, inversedBy="ordiniCapo")
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\JoinColumn(nullable=false, onDelete="CASCADE")
      */
     private $capo;
 
@@ -35,7 +35,7 @@ class OrdiniRow
 
     /**
      * @ORM\ManyToOne(targetEntity=Ordini::class, inversedBy="ordiniRows")
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\JoinColumn(nullable=false, onDelete="CASCADE")
      */
     private $ordine;
 

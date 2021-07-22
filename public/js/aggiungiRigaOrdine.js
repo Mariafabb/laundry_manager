@@ -17,11 +17,12 @@ $(document).ready(
     function() {
         var tabellaCapi = $("#nuovo_ordine_ordiniRows");
         //header tabella capi in ordine
-        tabellaCapi.append("<table class='justify-content-center'>" +
-            "<th class=\"col\">id Capo</th>" +
-            "<th class=\"col\">Descrizione</th>" +
+        tabellaCapi.append("<thead>" +
+            "<th>id Capo</th>" +
+            "<th>Descrizione</th>" +
             "<th class=\"col\">Importo</th>" +
-            "<th class=\"col\">N Capi</th>"
+            "<th class=\"col\">N Capi</th>" +
+            "</thead>"
         );
 
         //ricerca clienti
@@ -45,35 +46,39 @@ $(document).ready(
 
         //aggiunta capo a tabella dopo ricerca
         $("#aggiungiCapo").click(function () {
+            $tabellaCapiChildren = tabellaCapi.children('tr');
+            $tabellaCapiChildren.each(function (){
+                i = $(this).attr('numeroRiga');
+            })
+            i++;
             if (numeroCapi.val() == "") {
                 alert("Inserire il numero di capi");
             } else if (descrizioneCapo.val() == "") {
                 alert("Inserire nome capo");
             } else {
                 tabellaCapi.append(
-                    "<div class='container' numeroRiga='"+i+"'>" +
-                    "<div class='d-grid d-flex justify-content-center'>"+
+                    "<tr numeroRiga='"+i+"'>" +
 
-                    "<div class='d-block'>" +
+                    "<td>" +
                     "<input readonly='readonly'  id='form_ordini_row_" + i + "_idCapo' name='form_ordini_row[" + i + "]" +
-                    "[idCapo]' value='" + idCapo.val() + "' style='text-align: center'></div>" +
+                    "[idCapo]' value='" + idCapo.val() + "' style='text-align: center'></td>" +
 
-                    "<div class='d-block'>" +
+                    "<td>" +
                     "<input readonly='readonly' id='form_ordini_row_" + i + "_descrizioneCapo' name='form_ordini_row[" + i + "]" +
-                    "[descrizioneCapo]' value='" + descrizioneCapo.val() + "'></div>" +
+                    "[descrizioneCapo]' value='" + descrizioneCapo.val() + "' style='text-align: center'></td>" +
 
-                    "<div class='d-block'>" +
+                    "<td>" +
                     "<input readonly='readonly' id='form_ordini_row_" + i + "_prezzoCapo' name='form_ordini_row[" + i + "]" +
-                    "[prezzoCapo]' value='" + importoCapo + "'></div>" +
+                    "[prezzoCapo]' value='" + importoCapo + "' style='text-align: center'></div>" +
 
-                    "<div class='d-block'>" +
+                    "<td>" +
                     "<input id='form_ordini_row_" + i + "_numeroCapi' name='form_ordini_row[" + i + "]" +
-                    "[numeroCapi]' value='" + numeroCapi.val() + "'></div>" +
+                    "[numeroCapi]' value='" + numeroCapi.val() + "' style='text-align: center'></div>" +
                     "</div>"+
 
-                    "<div class='d-grid d-flex justify-content-center' onclick='eliminaRiga($(this))'> " +
-                    "<button> Elimina </button> </div>" +
-                    "</div>");
+                    "<td class='justify-content-center' onclick='eliminaRiga($(this))'> " +
+                    "<button> Elimina </button> </td>" +
+                    "</tr>");
 
 
                 importiCapi[i] = importoCapo * numeroCapi.val();

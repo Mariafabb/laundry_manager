@@ -42,6 +42,8 @@ class OrdiniController extends AbstractController
     private ClientiRepository $clientiRepository;
     private Security $security;
     private bool $lavorazioneDinamica;
+    private \DateTime $curDateTime;
+    private \DateTime $dataConsegna;
 
     /**
      * OrdiniController constructor.
@@ -53,6 +55,7 @@ class OrdiniController extends AbstractController
         $this->ordinirowRepository = $ordinirowRepository;
         $this->capiRepository = $capiRepository;
         $this->lavorazioneDinamica = false;
+        $this->curDateTime = new \DateTime();
 
         $impostazioni = $impostazioniRepository->findOneBy(["nome" => 'metodoCalcoloConsegna']);
         switch ($impostazioni->getValore()){
@@ -109,41 +112,19 @@ class OrdiniController extends AbstractController
         $ordine = new Ordini();
 
         $form = $this->createForm(NuovoOrdineType::class);
-        $curDateTime = new \DateTime();
-        $dataConsegna = !$this->lavorazioneDinamica ?
-            $curDateTime->add(new \DateInterval(('P'.$this->numeroGiorniLavorazione.'D'))) : null;
+        $this->dataConsegna = !$this->lavorazioneDinamica ?
+            $this->curDateTime->add(new \DateInterval(('P'.$this->numeroGiorniLavorazione.'D'))) : null;
 
         $form->handleRequest($request);
         if($form->isSubmitted()){
             /** @var Ordini $ordine */
             $ordine = $form->getData();
             $ordine->setUser($this->security->getUser());
-            //$ordine->setUser($userRepository->find(1));
             $ordine->setCliente($this->clientiRepository->findOneBy(["id" => $form["cliente_id"]->getData()]));
             $ordine->setDataOrdine(new \DateTime());
             $listaCapi = $_POST["form_ordini_row"];
-            $totale = 0;
-            foreach ($listaCapi as $capoId){
-                $capo = $this->capiRepository->findOneBy(["id" => $capoId]);
-                $ordiniRow = new OrdiniRow();
-                $ordiniRow->setNumeroCapi($capoId["numeroCapi"]);
-                $importoRiga = $capo->getPrezzo() * $capoId["numeroCapi"];
-                $totale += $importoRiga;
-
-                if(is_null($this->numeroGiorniLavorazione) && $this->lavorazioneDinamica){
-                    $this->numeroGiorniLavorazione = $capo->getGiorniLavorazione();
-                    $dataConsegna = $curDateTime->add(new \DateInterval(('P'.$this->numeroGiorniLavorazione.'D')));
-                } else if($this->lavorazioneDinamica && $this->numeroGiorniLavorazione < $capo->getGiorniLavorazione()) {
-                    $this->numeroGiorniLavorazione = $capo->getGiorniLavorazione();
-                    $dataConsegna = $curDateTime->add(new \DateInterval(('P'.$this->numeroGiorniLavorazione.'D')));
-                }
-
-                $ordiniRow->setCapo($capo)
-                    ->setimporto($importoRiga)
-                     ->setDataConsegna($dataConsegna);
-                    $ordine->addOrdiniRow($ordiniRow);
-            }
-            $ordine->setDataConsegna($dataConsegna);
+            $totale = $this->salvaOrdiniRowInOrdine($listaCapi, $ordine);
+            $ordine->setDataConsegna($this->dataConsegna);
             $ordine->setTotale($totale);
             return $this->salvaOrdine($ordine);
         }
@@ -155,6 +136,36 @@ class OrdiniController extends AbstractController
     }
 
     /**
+     * @param Capi[] $listaCapi
+     * @param Ordini $ordine
+     * @throws \Exception
+     */
+    public function salvaOrdiniRowInOrdine($listaCapi, &$ordine){
+        $totale = 0;
+        foreach ($listaCapi as $capoId){
+            $capo = $this->capiRepository->findOneBy(["id" => $capoId]);
+            $ordiniRow = new OrdiniRow();
+            $ordiniRow->setNumeroCapi($capoId["numeroCapi"]);
+            $importoRiga = $capo->getPrezzo() * $capoId["numeroCapi"];
+            $totale += $importoRiga;
+
+            if(is_null($this->numeroGiorniLavorazione) && $this->lavorazioneDinamica){
+                $this->numeroGiorniLavorazione = $capo->getGiorniLavorazione();
+                $this->dataConsegna = $this->curDateTime->add(new \DateInterval(('P'.$this->numeroGiorniLavorazione.'D')));
+            } else if($this->lavorazioneDinamica && $this->numeroGiorniLavorazione < $capo->getGiorniLavorazione()) {
+                $this->numeroGiorniLavorazione = $capo->getGiorniLavorazione();
+                $this->dataConsegna = $this->curDateTime->add(new \DateInterval(('P'.$this->numeroGiorniLavorazione.'D')));
+            }
+
+            $ordiniRow->setCapo($capo)
+                ->setimporto($importoRiga)
+                ->setDataConsegna($this->dataConsegna);
+            $ordine->addOrdiniRow($ordiniRow);
+        }
+        return $totale;
+    }
+
+    /**
      * @Route("/ordini/modifica/{slug}", name="modifica_ordine", options={"expose"=true})
      */
     public function modificaOrdine($slug, Request $request)
@@ -162,12 +173,22 @@ class OrdiniController extends AbstractController
 
         $ordine = $this->ordiniRepository->find($slug);
         $ordiniRows = $ordine->getOrdiniRows();
-        $form = $this->createForm(NuovoOrdineType::class, $ordine);
+        $form = $this->createForm(NuovoOrdineType::class, $ordine, ['edit' => true]);
+        $this->dataConsegna = $ordine->getDataConsegna();
 
         $form->handleRequest($request);
-        if ($form->isSubmitted() && $form->isValid()) {
-            $ordine = $form->getData();
-            return $this->salvaOrdine($ordine);
+        if ($form->isSubmitted()) {
+            /** @var Ordini $ordineEdited */
+            $ordineEdited = $form->getData();
+            $ordineEdited->setCliente($ordine->getCliente());
+            $ordiniRowForDeletion = $ordine->getOrdiniRows();
+            /** @var OrdiniRow $temp */
+            foreach ($ordiniRowForDeletion as $temp){
+                $this->em->remove($temp);
+            }
+            $this->em->flush();
+            $this->salvaOrdiniRowInOrdine($_POST["form_ordini_row"], $ordineEdited);
+            return $this->salvaOrdine($ordineEdited);
         }
 
         return $this->render("Ordini/nuovoOrdine.html.twig", [
@@ -205,7 +226,7 @@ class OrdiniController extends AbstractController
 
         public function stampaOrdine(Ordini $ordine){
             //$connector = new FilePrintConnector("scontrini");
-            $connector = new WindowsPrintConnector("localhost/scontrini");
+            $connector = new WindowsPrintConnector("smb://scontrini:scontrini@10.8.0.2/scontrini");
 
             $printer = new Printer($connector);
 
