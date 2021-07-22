@@ -57,7 +57,7 @@ class ImpostazioniController extends AbstractController
             if (!is_null($giorniLav))
                 $form->get('numero_giorni_lavorazione')->setData($giorniLav->getValore());
 
-            return $this->render("Impostazioni/impostazioni.html.twig", [
+            return $this->render("Impostazioni/Impostazioni.html.twig", [
                 "dati" => [$logo, $metodoCC, $giorniLav],
                 "form" => $form->createView(),
             ]);

@@ -136,11 +136,12 @@ class OrdiniController extends AbstractController
      */
     public function salvaOrdiniRowInOrdine($listaCapi, &$ordine){
         $totale = 0;
-        foreach ($listaCapi as $capoId){
+        foreach ($listaCapi as $capoPOST){
+            $capoId = $capoPOST["idCapo"];
             $capo = $this->capiRepository->findOneBy(["id" => $capoId]);
             $ordiniRow = new OrdiniRow();
-            $ordiniRow->setNumeroCapi($capoId["numeroCapi"]);
-            $importoRiga = $capo->getPrezzo() * $capoId["numeroCapi"];
+            $ordiniRow->setNumeroCapi($capoPOST["numeroCapi"]);
+            $importoRiga = $capo->getPrezzo() * $capoPOST["numeroCapi"];
             $totale += $importoRiga;
 
             if(is_null($this->numeroGiorniLavorazione) && $this->lavorazioneDinamica){
@@ -237,7 +238,7 @@ class OrdiniController extends AbstractController
                 $text .= $item->getValore() ."\n";
             }
             $text.= "\nSpettabile: " .$cliente->getCognome()."\n";
-            $text.= "Ordine numero" .$ordine->getId() ." del ".$ordine->getDataOrdine()->format("d-m-Y H:i")."\n";
+            $text.= "Ordine numero: " .$ordine->getId() ." del ".$ordine->getDataOrdine()->format("d-m-Y H:i")."\n";
             $text.= "Descrizione       Q.ta    Euro\n";
             foreach ($ordine->getOrdiniRows() as $ordineRow){
                 $text.= $ordineRow->getCapo()->getTipo() ."             ";
