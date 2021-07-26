@@ -95,6 +95,13 @@ class OrdiniController extends AbstractController
      */
     public function salvaOrdine($ordine): Response
     {
+        $giornoSettimana = $ordine->getDataConsegna()->format("l");
+        switch ($giornoSettimana){
+            case "Saturday": $ordine->setDataConsegna($ordine->getDataConsegna()->add(new \DateInterval(('P2D')))); break;
+            case "Sunday": $ordine->setDataConsegna($ordine->getDataConsegna()->add(new \DateInterval(('P1D')))); break;
+            default:
+        }
+
         $this->em->persist($ordine);
         $this->em->flush();
 
@@ -230,7 +237,7 @@ class OrdiniController extends AbstractController
 
             $printer = new Printer($connector);
 
-            //TODO: implementare testo e provare
+            //check data in weekend
 
         /**
          * @var Impostazioni $anagraficaAzienda
@@ -238,29 +245,41 @@ class OrdiniController extends AbstractController
             $anagraficaAzienda = $this->impostazioniRepository->findBy(["tipo" => "anagraficaAziendale"]);
             $cliente = $ordine->getCliente();
 
-            $text = "";
-            foreach ($anagraficaAzienda as $item) {
-                $text .= $item->getValore() ."\n";
-            }
-            $text.= "\nSpettabile: " .$cliente->getCognome()."\n";
-            $text.= "Ordine numero" .$ordine->getId() ." del ".$ordine->getDataOrdine()->format("d-m-Y H:i")."\n";
+            $text = " Lavanderia Lavostiro di Arcangeloni\nPiazza Solari 1 R 16143 Genova. PI 02367870991\n\n";
+//            foreach ($anagraficaAzienda as $item) {
+//                $text .= $item->getValore() ."\n";
+//            }
+            $text.= "Spettabile: " .$cliente->getCognome()." ".$cliente->getNome()."\n";
+            $text.= "Ordine numero" .$ordine->getId() ." del ".$ordine->getDataOrdine()->format("d-m-Y")."\n";
             $text.= "Descrizione       Q.ta    Euro\n";
+
+            $dataRiconsegnaText = $ordine->getDataConsegna()->format("d-m-Y");
+
+            $bigliettiCapi = array();
+            $i = 0;
             foreach ($ordine->getOrdiniRows() as $ordineRow){
                 $text.= $ordineRow->getCapo()->getTipo() ."             ";
                 $text.= $ordineRow->getNumeroCapi() ."       ";
                 $text.= $ordineRow->getImporto() ."\n";
+                $bigliettiCapi[i] = "\n".$ordineRow->getCapo()->getTipo(). " -- ". $cliente->getCognome(). " ".$cliente->getNome() ." -- $dataRiconsegnaText\n";
+                ++$i;
             }
             $text.= "\n\n";
-            $text.= "Totale                      " .$ordine->getTotale() ."\nPAGATO\n";
-            $text.= "Riconsegna: " .$ordine->getDataConsegna()->format("d-m-Y");
-            $text.="\n \n \n \n";
+            $text.= "Totale                      " .$ordine->getTotale() ."€, PAGATO\n";
+            $text.= "Riconsegna: $dataRiconsegnaText";
+            $text.="\n \n";
 
             $printer -> text($text);
             $printer -> cut();
             $printer -> text($text);
             $printer -> cut();
+
+            foreach ($bigliettiCapi as $text){
+                $printer->text($text);
+                $printer->cut();
+            }
+
             $printer -> close();
-
         }
 
 }
