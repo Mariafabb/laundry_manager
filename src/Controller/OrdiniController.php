@@ -149,11 +149,12 @@ class OrdiniController extends AbstractController
      */
     public function salvaOrdiniRowInOrdine($listaCapi, &$ordine){
         $totale = 0;
-        foreach ($listaCapi as $capoId){
+        foreach ($listaCapi as $capoPOST){
+            $capoId = $capoPOST["idCapo"];
             $capo = $this->capiRepository->findOneBy(["id" => $capoId]);
             $ordiniRow = new OrdiniRow();
-            $ordiniRow->setNumeroCapi($capoId["numeroCapi"]);
-            $importoRiga = $capo->getPrezzo() * $capoId["numeroCapi"];
+            $ordiniRow->setNumeroCapi($capoPOST["numeroCapi"]);
+            $importoRiga = $capo->getPrezzo() * $capoPOST["numeroCapi"];
             $totale += $importoRiga;
 
             if(is_null($this->numeroGiorniLavorazione) && $this->lavorazioneDinamica){
