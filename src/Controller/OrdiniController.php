@@ -259,11 +259,16 @@ class OrdiniController extends AbstractController
             $bigliettiCapi = array();
             $i = 0;
             foreach ($ordine->getOrdiniRows() as $ordineRow){
+                $numeroCapi = $ordineRow->getNumeroCapi();
                 $text.= $ordineRow->getCapo()->getTipo() ."             ";
-                $text.= $ordineRow->getNumeroCapi() ."       ";
+                $text.= "$numeroCapi       ";
                 $text.= $ordineRow->getImporto() ."\n";
-                $bigliettiCapi[i] = "\n".$ordineRow->getCapo()->getTipo(). " -- ". $cliente->getCognome(). " ".$cliente->getNome() ." -- $dataRiconsegnaText\n";
-                ++$i;
+
+                while ($numeroCapi > 0) {
+                    $bigliettiCapi[i] = "\n" . $ordineRow->getCapo()->getTipo() . " -- " . $cliente->getCognome() . " " . $cliente->getNome() . " -- $dataRiconsegnaText\n";
+                    ++$i;
+                    $numeroCapi--;
+                }
             }
             $text.= "\n\n";
             $text.= "Totale                      " .$ordine->getTotale() ."€, PAGATO\n";
