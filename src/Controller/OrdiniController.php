@@ -237,6 +237,7 @@ class OrdiniController extends AbstractController
             $connector = new WindowsPrintConnector("smb://scontrini:scontrini@10.8.0.2/scontrini");
 
             $printer = new Printer($connector);
+            $printer->setTextSize(3);
 
             //check data in weekend
 
@@ -265,24 +266,27 @@ class OrdiniController extends AbstractController
                 $text.= $ordineRow->getImporto() ."\n";
 
                 while ($numeroCapi > 0) {
-                    $bigliettiCapi[i] = "\n" . $ordineRow->getCapo()->getTipo() . " -- " . $cliente->getCognome() . " " . $cliente->getNome() . " -- $dataRiconsegnaText\n";
+                    $bigliettiCapi[$i] = $ordineRow->getCapo()->getTipo() . " -- " . $cliente->getCognome() . " " . $cliente->getNome() . " -- $dataRiconsegnaText";
                     ++$i;
                     $numeroCapi--;
                 }
             }
-            $text.= "\n\n";
-            $text.= "Totale                      " .$ordine->getTotale() ."€, PAGATO\n";
+            $text.= "\n";
+            $text.= "Totale                      " .$ordine->getTotale() ."EURO, PAGATO\n";
             $text.= "Riconsegna: $dataRiconsegnaText";
-            $text.="\n \n";
+            $text.="\n";
 
             $printer -> text($text);
             $printer -> cut();
             $printer -> text($text);
             $printer -> cut();
+
+//	dd($bigliettiCapi);
 
             foreach ($bigliettiCapi as $text){
                 $printer->text($text);
                 $printer->cut();
+                $printer->release();
             }
 
             $printer -> close();
